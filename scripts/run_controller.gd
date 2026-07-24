@@ -8,6 +8,7 @@ signal segment_completed(segment: RecordedSegment)
 signal attempt_failed
 signal echo_playback_started
 signal echo_playback_finished
+signal progress_history_changed(can_return_previous: bool)
 signal level_completed
 
 enum RunState {
@@ -35,6 +36,7 @@ var current_anchor: Anchor
 var expected_anchor: Anchor
 var time_remaining: float = 0.0
 var completed_segments: Array[RecordedSegment] = []
+var anchor_progress: Array[AnchorProgressEntry] = []
 var _ordered_anchors: Array[Anchor] = []
 var _attempt_token: int = 0
 var _active_echo: Echo
@@ -67,6 +69,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		_start_traversal()
 	elif event.is_action_pressed(&"retry_current") and state == RunState.RECORDING:
 		_fail_attempt()
+	elif (
+		event.is_action_pressed(&"return_previous_anchor")
+		and state in [RunState.ANCHOR_READY, RunState.RECORDING]
+	):
+		return_to_previous_anchor()
 
 
 func _physics_process(delta: float) -> void:
@@ -82,19 +89,33 @@ func get_state_name() -> String:
 	return RunState.keys()[state]
 
 
+func can_return_to_previous_anchor() -> bool:
+	return anchor_progress.size() > 1
+
+
 func _initialize_run() -> void:
 	player.teleport_to(current_anchor.get_spawn_transform())
+	anchor_progress.clear()
+	anchor_progress.append(
+		AnchorProgressEntry.create(
+			current_anchor,
+			null,
+			snapshot_controller.capture_snapshot()
+		)
+	)
 	time_remaining = config.segment_duration
 	_set_state(RunState.ANCHOR_READY)
 	_update_anchor_visuals()
 	anchor_changed.emit(current_anchor, expected_anchor)
 	time_remaining_changed.emit(time_remaining)
+	progress_history_changed.emit(can_return_to_previous_anchor())
 
 
 func _start_traversal() -> void:
 	_attempt_token += 1
 	time_remaining = config.segment_duration
 	_attempt_snapshot = snapshot_controller.capture_snapshot()
+	anchor_progress[-1].level_snapshot = _attempt_snapshot
 	recording_controller.start_recording(current_anchor.anchor_id)
 	_spawn_previous_echo()
 	player.set_movement_enabled(true)
@@ -114,12 +135,14 @@ func _on_anchor_arrived(anchor: Anchor) -> void:
 	segment_completed.emit(segment)
 	_attempt_snapshot = null
 	current_anchor = anchor
+	anchor_progress.append(AnchorProgressEntry.create(current_anchor, segment))
 	expected_anchor = _get_next_anchor(anchor)
 	time_remaining = config.segment_duration
 	_update_anchor_visuals()
 	anchor_changed.emit(current_anchor, expected_anchor)
 	_set_state(RunState.ANCHOR_READY)
 	time_remaining_changed.emit(time_remaining)
+	progress_history_changed.emit(can_return_to_previous_anchor())
 
 
 func _on_goal_reached() -> void:
@@ -161,6 +184,42 @@ func _fail_attempt() -> void:
 	_set_state(RunState.ANCHOR_READY)
 
 
+func return_to_previous_anchor() -> void:
+	if state not in [RunState.ANCHOR_READY, RunState.RECORDING]:
+		return
+	if not can_return_to_previous_anchor():
+		return
+
+	_attempt_token += 1
+	player.set_movement_enabled(false)
+	_remove_active_echo()
+	if recording_controller.is_recording:
+		recording_controller.discard_recording()
+
+	_set_state(RunState.ROLLING_BACK)
+	_attempt_snapshot = null
+
+	var removed_progress: AnchorProgressEntry = anchor_progress.pop_back()
+	assert(removed_progress.incoming_segment != null, "A non-start Anchor must have an incoming Segment.")
+	assert(not completed_segments.is_empty(), "Segment history is inconsistent with Anchor progress.")
+	var removed_segment: RecordedSegment = completed_segments.pop_back()
+	assert(removed_segment == removed_progress.incoming_segment, "Rollback removed a mismatched Segment.")
+
+	var restored_progress: AnchorProgressEntry = anchor_progress[-1]
+	assert(restored_progress.level_snapshot != null, "Previous Anchor is missing its level snapshot.")
+	snapshot_controller.restore_snapshot(restored_progress.level_snapshot)
+
+	current_anchor = _find_anchor(restored_progress.anchor_id)
+	expected_anchor = _get_next_anchor(current_anchor)
+	player.teleport_to(restored_progress.player_spawn_transform)
+	time_remaining = config.segment_duration
+	_update_anchor_visuals()
+	anchor_changed.emit(current_anchor, expected_anchor)
+	time_remaining_changed.emit(time_remaining)
+	progress_history_changed.emit(can_return_to_previous_anchor())
+	_set_state(RunState.ANCHOR_READY)
+
+
 func _spawn_previous_echo() -> void:
 	_remove_active_echo()
 	if completed_segments.is_empty():
@@ -198,6 +257,14 @@ func _get_next_anchor(anchor: Anchor) -> Anchor:
 	if next_index >= _ordered_anchors.size():
 		return null
 	return _ordered_anchors[next_index]
+
+
+func _find_anchor(anchor_id: StringName) -> Anchor:
+	for anchor in _ordered_anchors:
+		if anchor.anchor_id == anchor_id:
+			return anchor
+	assert(false, "Anchor history references an unknown Anchor ID: %s" % anchor_id)
+	return null
 
 
 func _set_state(new_state: RunState) -> void:

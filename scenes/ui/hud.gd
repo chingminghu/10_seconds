@@ -17,6 +17,7 @@ func _ready() -> void:
 	run_controller.time_remaining_changed.connect(_on_time_remaining_changed)
 	run_controller.echo_playback_started.connect(_on_echo_playback_started)
 	run_controller.echo_playback_finished.connect(_on_echo_playback_finished)
+	run_controller.progress_history_changed.connect(_on_progress_history_changed)
 	_refresh_state(run_controller.state)
 	_on_time_remaining_changed(run_controller.time_remaining)
 
@@ -46,13 +47,21 @@ func _on_echo_playback_finished() -> void:
 	_rewind_label.hide()
 
 
+func _on_progress_history_changed(_can_return_previous: bool) -> void:
+	_refresh_state(run_controller.state)
+
+
 func _refresh_state(current_state: RunController.RunState) -> void:
 	_state_label.text = run_controller.get_state_name()
 	match current_state:
 		RunController.RunState.ANCHOR_READY:
 			_prompt_label.text = "Press [ENTER / E] to PLAY / RECORD"
+			if run_controller.can_return_to_previous_anchor():
+				_prompt_label.text += "  •  [Q / BACKSPACE] RETURN"
 		RunController.RunState.RECORDING:
 			_prompt_label.text = "[R] RETRY CURRENT"
+			if run_controller.can_return_to_previous_anchor():
+				_prompt_label.text += "  •  [Q / BACKSPACE] RETURN"
 		RunController.RunState.ATTEMPT_FAILED:
 			_prompt_label.text = "RECORDING FAILED"
 		RunController.RunState.LEVEL_COMPLETE:

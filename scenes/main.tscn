@@ -130,10 +130,10 @@ shape = SubResource("CeilingShape")
 [node name="Mechanisms" type="Node2D" parent="."]
 
 [node name="PressurePlate" parent="Mechanisms" instance=ExtResource("11")]
-position = Vector2(650, 456)
+position = Vector2(329, 506)
 
 [node name="Door" parent="Mechanisms" node_paths=PackedStringArray("pressure_plate") instance=ExtResource("12")]
-position = Vector2(930, 472)
+position = Vector2(518, 448)
 pressure_plate = NodePath("../PressurePlate")
 
 [node name="Anchors" type="Node2D" parent="."]
