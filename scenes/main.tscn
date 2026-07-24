@@ -1,0 +1,190 @@
+[gd_scene load_steps=20 format=3 uid="uid://cqldufyueqo0c"]
+
+[ext_resource type="Script" uid="uid://do064rvb7o4fp" path="res://scenes/levels/level_base.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://bjkns1atlfwdb" path="res://scenes/anchor/anchor.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://c82cf441rhv72" path="res://scenes/goal/goal.tscn" id="4"]
+[ext_resource type="Script" uid="uid://wsgsuilowg4n" path="res://scripts/run_controller.gd" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="6"]
+[ext_resource type="Script" uid="uid://c1r5wldgu73nm" path="res://scripts/recording_controller.gd" id="7"]
+[ext_resource type="Resource" path="res://resources/game_config.tres" id="8"]
+[ext_resource type="PackedScene" path="res://scenes/echo/echo.tscn" id="9"]
+[ext_resource type="Script" path="res://scripts/snapshot_controller.gd" id="10"]
+[ext_resource type="PackedScene" path="res://scenes/mechanisms/pressure_plate.tscn" id="11"]
+[ext_resource type="PackedScene" path="res://scenes/mechanisms/door.tscn" id="12"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape"]
+size = Vector2(1152, 48)
+
+[sub_resource type="RectangleShape2D" id="Step1Shape"]
+size = Vector2(180, 28)
+
+[sub_resource type="RectangleShape2D" id="Step2Shape"]
+size = Vector2(170, 28)
+
+[sub_resource type="RectangleShape2D" id="Step3Shape"]
+size = Vector2(170, 28)
+
+[sub_resource type="RectangleShape2D" id="LeftWallShape"]
+size = Vector2(32, 648)
+
+[sub_resource type="RectangleShape2D" id="RightWallShape"]
+size = Vector2(32, 648)
+
+[sub_resource type="RectangleShape2D" id="CeilingShape"]
+size = Vector2(1152, 24)
+
+[node name="Level01" type="Node2D"]
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 2
+color = Color(0.055, 0.065, 0.09, 1)
+
+[node name="GridLines" type="Node2D" parent="."]
+
+[node name="Line1" type="Line2D" parent="GridLines"]
+points = PackedVector2Array(0, 160, 1152, 160)
+width = 1.0
+default_color = Color(0.14, 0.16, 0.2, 1)
+
+[node name="Line2" type="Line2D" parent="GridLines"]
+points = PackedVector2Array(0, 320, 1152, 320)
+width = 1.0
+default_color = Color(0.14, 0.16, 0.2, 1)
+
+[node name="Line3" type="Line2D" parent="GridLines"]
+points = PackedVector2Array(0, 480, 1152, 480)
+width = 1.0
+default_color = Color(0.14, 0.16, 0.2, 1)
+
+[node name="StaticGeometry" type="Node2D" parent="."]
+
+[node name="Floor" type="StaticBody2D" parent="StaticGeometry"]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticGeometry/Floor"]
+position = Vector2(576, 624)
+shape = SubResource("FloorShape")
+
+[node name="Visual" type="Polygon2D" parent="StaticGeometry/Floor"]
+color = Color(0.25, 0.27, 0.32, 1)
+polygon = PackedVector2Array(0, 600, 1152, 600, 1152, 648, 0, 648)
+
+[node name="Step1" type="StaticBody2D" parent="StaticGeometry"]
+position = Vector2(350, 520)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticGeometry/Step1"]
+shape = SubResource("Step1Shape")
+
+[node name="Visual" type="Polygon2D" parent="StaticGeometry/Step1"]
+color = Color(0.33, 0.36, 0.42, 1)
+polygon = PackedVector2Array(-90, -14, 90, -14, 90, 14, -90, 14)
+
+[node name="Step2" type="StaticBody2D" parent="StaticGeometry"]
+position = Vector2(635, 470)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticGeometry/Step2"]
+shape = SubResource("Step2Shape")
+
+[node name="Visual" type="Polygon2D" parent="StaticGeometry/Step2"]
+color = Color(0.33, 0.36, 0.42, 1)
+polygon = PackedVector2Array(-85, -14, 85, -14, 85, 14, -85, 14)
+
+[node name="Step3" type="StaticBody2D" parent="StaticGeometry"]
+position = Vector2(1016, 486)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticGeometry/Step3"]
+shape = SubResource("Step3Shape")
+
+[node name="Visual" type="Polygon2D" parent="StaticGeometry/Step3"]
+color = Color(0.33, 0.36, 0.42, 1)
+polygon = PackedVector2Array(-85, -14, 85, -14, 85, 14, -85, 14)
+
+[node name="LeftWall" type="StaticBody2D" parent="StaticGeometry"]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticGeometry/LeftWall"]
+position = Vector2(-16, 324)
+shape = SubResource("LeftWallShape")
+
+[node name="RightWall" type="StaticBody2D" parent="StaticGeometry"]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticGeometry/RightWall"]
+position = Vector2(1168, 324)
+shape = SubResource("RightWallShape")
+
+[node name="Ceiling" type="StaticBody2D" parent="StaticGeometry"]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticGeometry/Ceiling"]
+position = Vector2(576, -12)
+shape = SubResource("CeilingShape")
+
+[node name="Mechanisms" type="Node2D" parent="."]
+
+[node name="PressurePlate" parent="Mechanisms" instance=ExtResource("11")]
+position = Vector2(650, 456)
+
+[node name="Door" parent="Mechanisms" node_paths=PackedStringArray("pressure_plate") instance=ExtResource("12")]
+position = Vector2(930, 472)
+pressure_plate = NodePath("../PressurePlate")
+
+[node name="Anchors" type="Node2D" parent="."]
+
+[node name="AnchorA" parent="Anchors" instance=ExtResource("3")]
+position = Vector2(110, 600)
+anchor_id = &"A"
+player_spawn_offset = Vector2(0, -1)
+is_start_anchor = true
+
+[node name="AnchorB" parent="Anchors" instance=ExtResource("3")]
+position = Vector2(430, 506)
+anchor_id = &"B"
+order_index = 1
+player_spawn_offset = Vector2(0, -1)
+
+[node name="AnchorC" parent="Anchors" instance=ExtResource("3")]
+position = Vector2(710, 456)
+anchor_id = &"C"
+order_index = 2
+player_spawn_offset = Vector2(0, -1)
+
+[node name="Goal" parent="." instance=ExtResource("4")]
+position = Vector2(1022, 473)
+
+[node name="Player" parent="." instance=ExtResource("2")]
+position = Vector2(110, 599)
+
+[node name="EchoContainer" type="Node2D" parent="."]
+
+[node name="RecordingController" type="Node" parent="." node_paths=PackedStringArray("state_source")]
+script = ExtResource("7")
+state_source = NodePath("../Player/RecordableTransformSource")
+
+[node name="SnapshotController" type="Node" parent="." node_paths=PackedStringArray("snapshot_root")]
+script = ExtResource("10")
+snapshot_root = NodePath("..")
+
+[node name="RunController" type="Node" parent="." node_paths=PackedStringArray("player", "anchors_root", "goal", "recording_controller", "echo_container", "snapshot_controller")]
+script = ExtResource("5")
+player = NodePath("../Player")
+anchors_root = NodePath("../Anchors")
+goal = NodePath("../Goal")
+recording_controller = NodePath("../RecordingController")
+config = ExtResource("8")
+echo_scene = ExtResource("9")
+echo_container = NodePath("../EchoContainer")
+snapshot_controller = NodePath("../SnapshotController")
+
+[node name="FixedCamera" type="Camera2D" parent="."]
+position = Vector2(576, 324)
+
+[node name="HUD" parent="." node_paths=PackedStringArray("run_controller") instance=ExtResource("6")]
+run_controller = NodePath("../RunController")

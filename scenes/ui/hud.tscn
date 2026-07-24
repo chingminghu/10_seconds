@@ -1,0 +1,71 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/hud.gd" id="1"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1")
+
+[node name="TopBar" type="ColorRect" parent="."]
+offset_left = 24.0
+offset_top = 20.0
+offset_right = 1128.0
+offset_bottom = 78.0
+color = Color(0.03, 0.04, 0.06, 0.88)
+
+[node name="AnchorLabel" type="Label" parent="TopBar"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 18.0
+offset_top = 8.0
+offset_right = 450.0
+offset_bottom = 48.0
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_font_sizes/font_size = 22
+text = "ANCHOR A  >  B"
+
+[node name="StateLabel" type="Label" parent="TopBar"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 780.0
+offset_top = 8.0
+offset_right = 1080.0
+offset_bottom = 48.0
+theme_override_colors/font_color = Color(1, 0.35, 0.35, 1)
+theme_override_font_sizes/font_size = 22
+text = "ANCHOR_READY"
+horizontal_alignment = 2
+
+[node name="TimerLabel" type="Label" parent="TopBar"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 510.0
+offset_top = 4.0
+offset_right = 690.0
+offset_bottom = 52.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+text = "10.0"
+horizontal_alignment = 1
+
+[node name="RewindLabel" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+offset_left = 474.0
+offset_top = 86.0
+offset_right = 678.0
+offset_bottom = 122.0
+theme_override_colors/font_color = Color(0.84, 0.62, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "<< REWIND"
+horizontal_alignment = 1
+
+[node name="PromptLabel" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = 300.0
+offset_top = 564.0
+offset_right = 852.0
+offset_bottom = 614.0
+theme_override_colors/font_color = Color(1, 0.84, 0.3, 1)
+theme_override_font_sizes/font_size = 24
+text = "Press [ENTER / E] to PLAY / RECORD"
+horizontal_alignment = 1

@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scenes/player/player.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/game_config.tres" id="2"]
+[ext_resource type="Script" path="res://scripts/recordable_transform_source.gd" id="3"]
+
+[sub_resource type="CapsuleShape2D" id="Capsule"]
+radius = 14.0
+height = 42.0
+
+[sub_resource type="StyleBoxFlat" id="Unused"]
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 5
+floor_snap_length = 6.0
+floor_stop_on_slope = true
+script = ExtResource("1")
+config = ExtResource("2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -21)
+shape = SubResource("Capsule")
+
+[node name="Visual" type="Polygon2D" parent="."]
+position = Vector2(0, -21)
+polygon = PackedVector2Array(-14, -14, 14, -14, 14, 14, 7, 21, -7, 21, -14, 14)
+color = Color(0.2, 0.83, 1, 1)
+
+[node name="RecordableTransformSource" type="Node" parent="." node_paths=PackedStringArray("target")]
+script = ExtResource("3")
+target = NodePath("..")
