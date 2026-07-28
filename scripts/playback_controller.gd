@@ -3,6 +3,7 @@ extends Node
 
 signal playback_started(segment: RecordedSegment)
 signal playback_time_changed(playback_time: float, duration: float)
+signal playback_motion_applied(motion: Vector2, delta: float)
 signal playback_finished
 
 @export var playback_target: Node2D
@@ -40,7 +41,9 @@ func _physics_process(delta: float) -> void:
 	# guarantees the exact first frame despite accumulated floating-point error.
 	var reaches_start := playback_time <= delta or is_equal_approx(playback_time, delta)
 	playback_time = 0.0 if reaches_start else playback_time - delta
+	var previous_position := playback_target.global_position
 	_apply_frame(_segment.sample_at(playback_time))
+	playback_motion_applied.emit(playback_target.global_position - previous_position, delta)
 	playback_time_changed.emit(playback_time, _segment.duration)
 
 	if playback_time == 0.0:

@@ -116,6 +116,7 @@ func _start_traversal() -> void:
 	time_remaining = config.segment_duration
 	_attempt_snapshot = snapshot_controller.capture_snapshot()
 	anchor_progress[-1].level_snapshot = _attempt_snapshot
+	snapshot_controller.begin_attempt()
 	recording_controller.start_recording(current_anchor.anchor_id)
 	_spawn_previous_echo()
 	player.set_movement_enabled(true)
@@ -130,12 +131,19 @@ func _on_anchor_arrived(anchor: Anchor) -> void:
 	_set_state(RunState.ARRIVAL_TRANSITION)
 	player.set_movement_enabled(false)
 	_remove_active_echo()
+	snapshot_controller.end_attempt()
 	var segment := recording_controller.complete_recording(anchor.anchor_id)
 	completed_segments.append(segment)
 	segment_completed.emit(segment)
 	_attempt_snapshot = null
 	current_anchor = anchor
-	anchor_progress.append(AnchorProgressEntry.create(current_anchor, segment))
+	anchor_progress.append(
+		AnchorProgressEntry.create(
+			current_anchor,
+			segment,
+			snapshot_controller.capture_snapshot()
+		)
+	)
 	expected_anchor = _get_next_anchor(anchor)
 	time_remaining = config.segment_duration
 	_update_anchor_visuals()
@@ -151,6 +159,7 @@ func _on_goal_reached() -> void:
 
 	player.set_movement_enabled(false)
 	_remove_active_echo()
+	snapshot_controller.end_attempt()
 	var segment := recording_controller.complete_recording(&"GOAL")
 	completed_segments.append(segment)
 	segment_completed.emit(segment)
@@ -167,6 +176,7 @@ func _fail_attempt() -> void:
 	var failure_token := _attempt_token
 	player.set_movement_enabled(false)
 	_remove_active_echo()
+	snapshot_controller.end_attempt()
 	recording_controller.discard_recording()
 	_set_state(RunState.ATTEMPT_FAILED)
 	attempt_failed.emit()
@@ -193,6 +203,7 @@ func return_to_previous_anchor() -> void:
 	_attempt_token += 1
 	player.set_movement_enabled(false)
 	_remove_active_echo()
+	snapshot_controller.end_attempt()
 	if recording_controller.is_recording:
 		recording_controller.discard_recording()
 

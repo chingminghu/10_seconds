@@ -1,7 +1,7 @@
-[gd_scene load_steps=20 format=3 uid="uid://cqldufyueqo0c"]
+[gd_scene load_steps=15 format=3 uid="uid://cqldufyueqo0c"]
 
 [ext_resource type="Script" uid="uid://do064rvb7o4fp" path="res://scenes/levels/level_base.gd" id="1"]
-[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://cpp38pfxfd5yn" path="res://scenes/player/player.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://bjkns1atlfwdb" path="res://scenes/anchor/anchor.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://c82cf441rhv72" path="res://scenes/goal/goal.tscn" id="4"]
 [ext_resource type="Script" uid="uid://wsgsuilowg4n" path="res://scripts/run_controller.gd" id="5"]
@@ -9,30 +9,11 @@
 [ext_resource type="Script" uid="uid://c1r5wldgu73nm" path="res://scripts/recording_controller.gd" id="7"]
 [ext_resource type="Resource" path="res://resources/game_config.tres" id="8"]
 [ext_resource type="PackedScene" path="res://scenes/echo/echo.tscn" id="9"]
-[ext_resource type="Script" path="res://scripts/snapshot_controller.gd" id="10"]
+[ext_resource type="Script" uid="uid://duj7ie2vufaru" path="res://scripts/snapshot_controller.gd" id="10"]
 [ext_resource type="PackedScene" path="res://scenes/mechanisms/pressure_plate.tscn" id="11"]
 [ext_resource type="PackedScene" path="res://scenes/mechanisms/door.tscn" id="12"]
-
-[sub_resource type="RectangleShape2D" id="FloorShape"]
-size = Vector2(1152, 48)
-
-[sub_resource type="RectangleShape2D" id="Step1Shape"]
-size = Vector2(180, 28)
-
-[sub_resource type="RectangleShape2D" id="Step2Shape"]
-size = Vector2(170, 28)
-
-[sub_resource type="RectangleShape2D" id="Step3Shape"]
-size = Vector2(170, 28)
-
-[sub_resource type="RectangleShape2D" id="LeftWallShape"]
-size = Vector2(32, 648)
-
-[sub_resource type="RectangleShape2D" id="RightWallShape"]
-size = Vector2(32, 648)
-
-[sub_resource type="RectangleShape2D" id="CeilingShape"]
-size = Vector2(1152, 24)
+[ext_resource type="PackedScene" path="res://scenes/objects/pushable_box.tscn" id="13"]
+[ext_resource type="PackedScene" path="res://scenes/environment/level_block.tscn" id="14"]
 
 [node name="Level01" type="Node2D"]
 script = ExtResource("1")
@@ -62,70 +43,37 @@ default_color = Color(0.14, 0.16, 0.2, 1)
 
 [node name="StaticGeometry" type="Node2D" parent="."]
 
-[node name="Floor" type="StaticBody2D" parent="StaticGeometry"]
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticGeometry/Floor"]
+[node name="Floor" parent="StaticGeometry" instance=ExtResource("14")]
 position = Vector2(576, 624)
-shape = SubResource("FloorShape")
+size = Vector2(1152, 48)
+block_color = Color(0.25, 0.27, 0.32, 1)
 
-[node name="Visual" type="Polygon2D" parent="StaticGeometry/Floor"]
-color = Color(0.25, 0.27, 0.32, 1)
-polygon = PackedVector2Array(0, 600, 1152, 600, 1152, 648, 0, 648)
-
-[node name="Step1" type="StaticBody2D" parent="StaticGeometry"]
+[node name="Step1" parent="StaticGeometry" instance=ExtResource("14")]
 position = Vector2(350, 520)
-collision_mask = 0
+size = Vector2(180, 28)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticGeometry/Step1"]
-shape = SubResource("Step1Shape")
-
-[node name="Visual" type="Polygon2D" parent="StaticGeometry/Step1"]
-color = Color(0.33, 0.36, 0.42, 1)
-polygon = PackedVector2Array(-90, -14, 90, -14, 90, 14, -90, 14)
-
-[node name="Step2" type="StaticBody2D" parent="StaticGeometry"]
+[node name="Step2" parent="StaticGeometry" instance=ExtResource("14")]
 position = Vector2(635, 470)
-collision_mask = 0
+size = Vector2(170, 28)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticGeometry/Step2"]
-shape = SubResource("Step2Shape")
-
-[node name="Visual" type="Polygon2D" parent="StaticGeometry/Step2"]
-color = Color(0.33, 0.36, 0.42, 1)
-polygon = PackedVector2Array(-85, -14, 85, -14, 85, 14, -85, 14)
-
-[node name="Step3" type="StaticBody2D" parent="StaticGeometry"]
+[node name="Step3" parent="StaticGeometry" instance=ExtResource("14")]
 position = Vector2(1016, 486)
-collision_mask = 0
+size = Vector2(170, 28)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticGeometry/Step3"]
-shape = SubResource("Step3Shape")
-
-[node name="Visual" type="Polygon2D" parent="StaticGeometry/Step3"]
-color = Color(0.33, 0.36, 0.42, 1)
-polygon = PackedVector2Array(-85, -14, 85, -14, 85, 14, -85, 14)
-
-[node name="LeftWall" type="StaticBody2D" parent="StaticGeometry"]
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticGeometry/LeftWall"]
+[node name="LeftWall" parent="StaticGeometry" instance=ExtResource("14")]
 position = Vector2(-16, 324)
-shape = SubResource("LeftWallShape")
+size = Vector2(32, 648)
+block_color = Color(0, 0, 0, 0)
 
-[node name="RightWall" type="StaticBody2D" parent="StaticGeometry"]
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticGeometry/RightWall"]
+[node name="RightWall" parent="StaticGeometry" instance=ExtResource("14")]
 position = Vector2(1168, 324)
-shape = SubResource("RightWallShape")
+size = Vector2(32, 648)
+block_color = Color(0, 0, 0, 0)
 
-[node name="Ceiling" type="StaticBody2D" parent="StaticGeometry"]
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticGeometry/Ceiling"]
+[node name="Ceiling" parent="StaticGeometry" instance=ExtResource("14")]
 position = Vector2(576, -12)
-shape = SubResource("CeilingShape")
+size = Vector2(1152, 24)
+block_color = Color(0, 0, 0, 0)
 
 [node name="Mechanisms" type="Node2D" parent="."]
 
@@ -135,6 +83,12 @@ position = Vector2(329, 506)
 [node name="Door" parent="Mechanisms" node_paths=PackedStringArray("pressure_plate") instance=ExtResource("12")]
 position = Vector2(518, 448)
 pressure_plate = NodePath("../PressurePlate")
+
+[node name="Objects" type="Node2D" parent="."]
+position = Vector2(291, -319)
+
+[node name="PushableBox" parent="Objects" instance=ExtResource("13")]
+position = Vector2(230, 580)
 
 [node name="Anchors" type="Node2D" parent="."]
 
@@ -159,9 +113,6 @@ player_spawn_offset = Vector2(0, -1)
 [node name="Goal" parent="." instance=ExtResource("4")]
 position = Vector2(1022, 473)
 
-[node name="Player" parent="." instance=ExtResource("2")]
-position = Vector2(110, 599)
-
 [node name="EchoContainer" type="Node2D" parent="."]
 
 [node name="RecordingController" type="Node" parent="." node_paths=PackedStringArray("state_source")]
@@ -171,6 +122,9 @@ state_source = NodePath("../Player/RecordableTransformSource")
 [node name="SnapshotController" type="Node" parent="." node_paths=PackedStringArray("snapshot_root")]
 script = ExtResource("10")
 snapshot_root = NodePath("..")
+
+[node name="Player" parent="." instance=ExtResource("2")]
+position = Vector2(109, 587)
 
 [node name="RunController" type="Node" parent="." node_paths=PackedStringArray("player", "anchors_root", "goal", "recording_controller", "echo_container", "snapshot_controller")]
 script = ExtResource("5")

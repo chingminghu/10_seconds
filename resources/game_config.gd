@@ -6,6 +6,7 @@ extends Resource
 
 @export_category("Player Movement")
 @export_range(0.0, 600.0, 1.0, "suffix:px/s") var move_speed: float = 220.0
+@export_range(0.1, 1.0, 0.05) var slow_move_speed_multiplier: float = 0.4
 @export_range(0.0, 3000.0, 10.0, "suffix:px/s²") var horizontal_acceleration: float = 1800.0
 @export_range(0.0, 3000.0, 10.0, "suffix:px/s²") var horizontal_deceleration: float = 2200.0
 @export_range(-1000.0, 0.0, 1.0, "suffix:px/s") var jump_velocity: float = -500.0

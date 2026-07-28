@@ -28,6 +28,19 @@ func restore_snapshot(snapshot: AttemptSnapshot) -> void:
 		candidate.call(&"restore_state", snapshot.object_states[candidate])
 
 
+func begin_attempt() -> void:
+	_call_optional_lifecycle_method(&"begin_attempt")
+
+
+func end_attempt() -> void:
+	_call_optional_lifecycle_method(&"end_attempt")
+
+
 func _belongs_to_snapshot_root(candidate: Node) -> bool:
 	return candidate == snapshot_root or snapshot_root.is_ancestor_of(candidate)
 
+
+func _call_optional_lifecycle_method(method_name: StringName) -> void:
+	for candidate in get_tree().get_nodes_in_group(&"resettable"):
+		if _belongs_to_snapshot_root(candidate) and candidate.has_method(method_name):
+			candidate.call(method_name)

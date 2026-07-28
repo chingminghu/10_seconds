@@ -59,7 +59,7 @@ func _refresh_state(current_state: RunController.RunState) -> void:
 			if run_controller.can_return_to_previous_anchor():
 				_prompt_label.text += "  •  [Q / BACKSPACE] RETURN"
 		RunController.RunState.RECORDING:
-			_prompt_label.text = "[R] RETRY CURRENT"
+			_prompt_label.text = "[SHIFT] SLOW  |  [R] RETRY CURRENT"
 			if run_controller.can_return_to_previous_anchor():
 				_prompt_label.text += "  •  [Q / BACKSPACE] RETURN"
 		RunController.RunState.ATTEMPT_FAILED:
