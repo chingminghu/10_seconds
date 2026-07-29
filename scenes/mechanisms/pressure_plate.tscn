@@ -1,26 +1,26 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://dlw2pdgfs3fyl"]
 
-[ext_resource type="Script" path="res://scenes/mechanisms/pressure_plate.gd" id="1"]
+[ext_resource type="Script" uid="uid://mkyjwkvuqdlg" path="res://scenes/mechanisms/pressure_plate.gd" id="1"]
 
 [sub_resource type="RectangleShape2D" id="DetectionShape"]
 size = Vector2(44, 16)
 
-[node name="PressurePlate" type="Area2D"]
+[node name="PressurePlate" type="Area2D" unique_id=2146854833]
 collision_layer = 16
 collision_mask = 14
-monitoring = true
-monitorable = true
 script = ExtResource("1")
+active_color = Color(1, 0.35, 0.25, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1576709999]
 position = Vector2(0, -6)
 shape = SubResource("DetectionShape")
 
-[node name="Visual" type="Polygon2D" parent="."]
-polygon = PackedVector2Array(-22, 0, 22, 0, 18, -8, -18, -8)
+[node name="Visual" type="Polygon2D" parent="." unique_id=1828200751]
 color = Color(0.55, 0.18, 0.16, 1)
+polygon = PackedVector2Array(-22, 0, 22, 0, 18, -8, -18, -8)
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="." unique_id=1158943481]
+visible = false
 offset_left = -40.0
 offset_top = -38.0
 offset_right = 40.0
@@ -29,4 +29,3 @@ theme_override_colors/font_color = Color(1, 0.55, 0.45, 1)
 theme_override_font_sizes/font_size = 14
 text = "PLATE"
 horizontal_alignment = 1
-

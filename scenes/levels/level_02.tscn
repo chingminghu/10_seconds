@@ -1,0 +1,146 @@
+[gd_scene format=3 uid="uid://bvuv7xhxmpdvu"]
+
+[ext_resource type="Script" uid="uid://do064rvb7o4fp" path="res://scenes/levels/level_base.gd" id="1_4hx2o"]
+[ext_resource type="PackedScene" path="res://scenes/environment/level_block.tscn" id="2_o4ql5"]
+[ext_resource type="PackedScene" uid="uid://bjkns1atlfwdb" path="res://scenes/anchor/anchor.tscn" id="4_m2jhg"]
+[ext_resource type="PackedScene" uid="uid://c82cf441rhv72" path="res://scenes/goal/goal.tscn" id="5_q6ljp"]
+[ext_resource type="PackedScene" uid="uid://cpp38pfxfd5yn" path="res://scenes/player/player.tscn" id="6_4dr30"]
+[ext_resource type="Script" uid="uid://c1r5wldgu73nm" path="res://scripts/recording_controller.gd" id="7_dscar"]
+[ext_resource type="Script" uid="uid://duj7ie2vufaru" path="res://scripts/snapshot_controller.gd" id="8_01hg1"]
+[ext_resource type="Script" uid="uid://wsgsuilowg4n" path="res://scripts/run_controller.gd" id="9_v5pqk"]
+[ext_resource type="Resource" path="res://resources/game_config.tres" id="10_m2te4"]
+[ext_resource type="PackedScene" path="res://scenes/echo/echo.tscn" id="11_kxbgd"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="12_lky54"]
+
+[sub_resource type="RectangleShape2D" id="Step2Shape"]
+size = Vector2(208, 240)
+
+[node name="Level02" type="Node2D" unique_id=467344507]
+script = ExtResource("1_4hx2o")
+
+[node name="Background" type="ColorRect" parent="." unique_id=289486233]
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 2
+color = Color(0.055, 0.065, 0.09, 1)
+metadata/_edit_lock_ = true
+
+[node name="GridLines" type="Node2D" parent="." unique_id=1669352551]
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="Line1" type="Line2D" parent="GridLines" unique_id=95518462]
+points = PackedVector2Array(0, 160, 1152, 160)
+width = 1.0
+default_color = Color(0.14, 0.16, 0.2, 1)
+
+[node name="Line2" type="Line2D" parent="GridLines" unique_id=410022336]
+points = PackedVector2Array(0, 320, 1152, 320)
+width = 1.0
+default_color = Color(0.14, 0.16, 0.2, 1)
+
+[node name="Line3" type="Line2D" parent="GridLines" unique_id=1106732678]
+points = PackedVector2Array(0, 480, 1152, 480)
+width = 1.0
+default_color = Color(0.14, 0.16, 0.2, 1)
+
+[node name="StaticGeometry" type="Node2D" parent="." unique_id=290261620]
+
+[node name="Step2" type="StaticBody2D" parent="StaticGeometry" unique_id=605232992]
+visible = false
+position = Vector2(248, 480)
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticGeometry/Step2" unique_id=739577595]
+shape = SubResource("Step2Shape")
+
+[node name="Visual" type="Polygon2D" parent="StaticGeometry/Step2" unique_id=93752245]
+color = Color(0.33, 0.36, 0.42, 1)
+polygon = PackedVector2Array(-104, -120, 104, -120, 104, 120, -104, 120)
+
+[node name="Floor" parent="StaticGeometry" unique_id=1454939579 instance=ExtResource("2_o4ql5")]
+position = Vector2(576, 624)
+size = Vector2(1152, 48)
+block_color = Color(0.25, 0.27, 0.32, 1)
+
+[node name="LeftWall" parent="StaticGeometry" unique_id=2136945189 instance=ExtResource("2_o4ql5")]
+position = Vector2(-16, 324)
+size = Vector2(32, 648)
+block_color = Color(0, 0, 0, 0)
+
+[node name="RightWall" parent="StaticGeometry" unique_id=572672233 instance=ExtResource("2_o4ql5")]
+position = Vector2(1168, 324)
+size = Vector2(32, 648)
+block_color = Color(0, 0, 0, 0)
+
+[node name="Ceiling" parent="StaticGeometry" unique_id=1038001115 instance=ExtResource("2_o4ql5")]
+position = Vector2(576, -12)
+size = Vector2(1152, 24)
+block_color = Color(0, 0, 0, 0)
+
+[node name="LevelBlock" parent="StaticGeometry" unique_id=1732647941 instance=ExtResource("2_o4ql5")]
+position = Vector2(1040, 300)
+size = Vector2(224, 600)
+
+[node name="LevelBlock2" parent="StaticGeometry" unique_id=856390185 instance=ExtResource("2_o4ql5")]
+position = Vector2(832, 479)
+size = Vector2(192, 240)
+
+[node name="LevelBlock3" parent="StaticGeometry" unique_id=1584569617 instance=ExtResource("2_o4ql5")]
+position = Vector2(272, 479)
+size = Vector2(160, 240)
+
+[node name="LevelBlock4" parent="StaticGeometry" unique_id=493799724 instance=ExtResource("2_o4ql5")]
+position = Vector2(96, 300)
+size = Vector2(192, 600)
+
+[node name="Mechanisms" type="Node2D" parent="." unique_id=1614173136]
+
+[node name="Anchors" type="Node2D" parent="." unique_id=1384064918]
+
+[node name="AnchorA" parent="Anchors" unique_id=1878205692 instance=ExtResource("4_m2jhg")]
+position = Vector2(384, 600)
+anchor_id = &"A"
+player_spawn_offset = Vector2(0, -1)
+is_start_anchor = true
+
+[node name="AnchorB" parent="Anchors" unique_id=1219635522 instance=ExtResource("4_m2jhg")]
+position = Vector2(704, 600)
+anchor_id = &"B"
+order_index = 1
+player_spawn_offset = Vector2(0, -1)
+
+[node name="Goal" parent="." unique_id=1775516264 instance=ExtResource("5_q6ljp")]
+position = Vector2(312, 360)
+
+[node name="Player" parent="." unique_id=1859108231 instance=ExtResource("6_4dr30")]
+position = Vector2(384, 600)
+
+[node name="EchoContainer" type="Node2D" parent="." unique_id=2119110748]
+
+[node name="RecordingController" type="Node" parent="." unique_id=320842425 node_paths=PackedStringArray("state_source")]
+script = ExtResource("7_dscar")
+state_source = NodePath("../Player/RecordableTransformSource")
+
+[node name="SnapshotController" type="Node" parent="." unique_id=1664226576 node_paths=PackedStringArray("snapshot_root")]
+script = ExtResource("8_01hg1")
+snapshot_root = NodePath("..")
+
+[node name="RunController" type="Node" parent="." unique_id=316431136 node_paths=PackedStringArray("player", "anchors_root", "goal", "recording_controller", "echo_container", "snapshot_controller")]
+unique_name_in_owner = true
+script = ExtResource("9_v5pqk")
+player = NodePath("../Player")
+anchors_root = NodePath("../Anchors")
+goal = NodePath("../Goal")
+recording_controller = NodePath("../RecordingController")
+config = ExtResource("10_m2te4")
+echo_scene = ExtResource("11_kxbgd")
+echo_container = NodePath("../EchoContainer")
+snapshot_controller = NodePath("../SnapshotController")
+
+[node name="FixedCamera" type="Camera2D" parent="." unique_id=92126250]
+position = Vector2(576, 324)
+
+[node name="HUD" parent="." unique_id=468961568 node_paths=PackedStringArray("run_controller") instance=ExtResource("12_lky54")]
+run_controller = NodePath("../RunController")

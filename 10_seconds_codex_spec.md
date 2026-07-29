@@ -531,6 +531,7 @@ res://
 │       ├── level_01.tscn
 │       └── level_02.tscn
 ├── scripts/
+│   ├── level_manager.gd
 │   ├── run_controller.gd
 │   ├── recording_controller.gd
 │   ├── recorded_frame.gd
@@ -544,9 +545,29 @@ res://
 └── tests/
 ```
 
-## 13. Main scene composition
+The application entry scene is `res://scenes/main.tscn`. It owns the
+`LevelManager` and a `LevelContainer`; playable level geometry must not be
+authored directly in the application entry scene. Individual playable levels
+live under `res://scenes/levels/`, beginning with
+`res://scenes/levels/level_01.tscn`.
 
-Suggested level root:
+`LevelManager` owns the ordered list of level `PackedScene` resources, loads the
+first level on startup, keeps exactly one level instance in `LevelContainer`,
+and advances after the active `RunController` emits `level_completed`. If the
+last configured level is completed, it emits `campaign_completed` and leaves
+the completed level visible. Its implementation lives at
+`res://scripts/level_manager.gd`.
+
+## 13. Application and level scene composition
+
+Application root:
+
+```text
+Main (Node / LevelManager)
+└── LevelContainer (Node)
+```
+
+Suggested playable level root:
 
 ```text
 Level (Node2D)
@@ -558,6 +579,7 @@ Level (Node2D)
 ├── EchoContainer (Node2D)
 ├── RunController (Node)
 ├── RecordingController (Node)
+├── SnapshotController (Node)
 ├── FixedCamera (Camera2D)
 └── HUD (CanvasLayer)
 ```
@@ -567,6 +589,11 @@ Level (Node2D)
 `RecordingController` owns frame capture, Segment creation, and playback timing data.
 
 The Echo scene owns rendering and collision during playback but does not decide game progression.
+
+Every managed level must expose its `RunController` as a scene-unique node so
+`LevelManager` can connect to `level_completed` without depending on the rest
+of the level's internal hierarchy. Level-specific tests should load the level
+scene directly; application-flow tests should load `scenes/main.tscn`.
 
 ## 14. Anchor implementation
 

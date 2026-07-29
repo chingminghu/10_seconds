@@ -1,6 +1,6 @@
 extends SceneTree
 
-const MAIN_SCENE := preload("res://scenes/main.tscn")
+const LEVEL_SCENE := preload("res://scenes/levels/level_01.tscn")
 
 
 func _initialize() -> void:
@@ -8,7 +8,7 @@ func _initialize() -> void:
 
 
 func _run_test() -> void:
-	var level := MAIN_SCENE.instantiate()
+	var level := LEVEL_SCENE.instantiate()
 	root.add_child(level)
 	for _tick in 3:
 		await physics_frame

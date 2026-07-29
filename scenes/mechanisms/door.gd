@@ -1,15 +1,29 @@
+@tool
 class_name Door
 extends StaticBody2D
 
+@export_category("Configuration")
 @export var pressure_plate: PressurePlate
+
+@export_category("Appearance")
+@export var door_size: Vector2 = Vector2(28.0, 120.0):
+	set(value):
+		door_size = Vector2(maxf(value.x, 1.0), maxf(value.y, 1.0))
+		_apply_appearance()
+
+@export var door_color: Color = Color(0.82, 0.3, 0.22, 1.0):
+	set(value):
+		door_color = value
+		_apply_appearance()
 
 var is_open: bool = false
 
-@onready var _collision_shape: CollisionShape2D = $CollisionShape2D
-@onready var _visual: Polygon2D = $Visual
-
 
 func _ready() -> void:
+	_apply_appearance()
+	if Engine.is_editor_hint():
+		return
+
 	assert(pressure_plate != null, "Door requires a PressurePlate reference.")
 	add_to_group(&"resettable")
 	pressure_plate.activation_changed.connect(_on_plate_activation_changed)
@@ -38,6 +52,38 @@ func _set_open(open: bool) -> void:
 
 
 func _apply_state() -> void:
-	_collision_shape.set_deferred(&"disabled", is_open)
-	_visual.modulate = Color(1.0, 1.0, 1.0, 0.18) if is_open else Color.WHITE
+	var collision_shape := get_node_or_null("CollisionShape2D") as CollisionShape2D
+	var visual := get_node_or_null("Visual") as Polygon2D
+	if collision_shape != null:
+		collision_shape.set_deferred(&"disabled", is_open)
+	if visual != null:
+		visual.modulate = Color(1.0, 1.0, 1.0, 0.18) if is_open else Color.WHITE
 
+
+func _apply_appearance() -> void:
+	var half_width := door_size.x * 0.5
+
+	var visual := get_node_or_null("Visual") as Polygon2D
+	if visual != null:
+		visual.polygon = PackedVector2Array([
+			Vector2(-half_width, 0.0),
+			Vector2(half_width, 0.0),
+			Vector2(half_width, -door_size.y),
+			Vector2(-half_width, -door_size.y),
+		])
+		visual.color = door_color
+
+	var collision_shape := get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if collision_shape != null:
+		collision_shape.position = Vector2(0.0, -door_size.y * 0.5)
+		var rectangle := collision_shape.shape as RectangleShape2D
+		if rectangle != null:
+			rectangle.size = door_size
+
+	var label := get_node_or_null("Label") as Label
+	if label != null:
+		var label_half_width := maxf(36.0, half_width)
+		label.offset_left = -label_half_width
+		label.offset_right = label_half_width
+		label.offset_top = -door_size.y - 34.0
+		label.offset_bottom = -door_size.y - 10.0

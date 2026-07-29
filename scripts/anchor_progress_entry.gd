@@ -19,4 +19,3 @@ static func create(
 	entry.incoming_segment = segment_ending_here
 	entry.level_snapshot = snapshot_at_anchor
 	return entry
-

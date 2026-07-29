@@ -8,7 +8,7 @@ func _init() -> void:
 
 
 func _run() -> void:
-	var level_scene: PackedScene = load("res://scenes/main.tscn")
+	var level_scene: PackedScene = load("res://scenes/levels/level_01.tscn")
 	var level: Node = level_scene.instantiate()
 	root.add_child(level)
 	await process_frame
