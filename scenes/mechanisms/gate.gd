@@ -1,20 +1,20 @@
 @tool
-class_name Door
+class_name Gate
 extends StaticBody2D
 
 @export_category("Configuration")
-@export var pressure_plate: PressurePlate
+@export var toggle_pad: TogglePad
 @export var is_open_initial: bool = false
 
 @export_category("Appearance")
-@export var door_size: Vector2 = Vector2(28.0, 120.0):
+@export var size: Vector2 = Vector2(28.0, 120.0):
 	set(value):
-		door_size = Vector2(maxf(value.x, 1.0), maxf(value.y, 1.0))
+		size = Vector2(maxf(value.x, 1.0), maxf(value.y, 1.0))
 		_apply_appearance()
 
-@export var door_color: Color = Color(0.82, 0.3, 0.22, 1.0):
+@export var gate_color: Color = Color(0.82, 0.3, 0.22, 1.0):
 	set(value):
-		door_color = value
+		gate_color = value
 		_apply_appearance()
 
 var is_open: bool = is_open_initial
@@ -25,10 +25,10 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
-	assert(pressure_plate != null, "Door requires a PressurePlate reference.")
+	assert(toggle_pad != null, "Gate requires a TogglePad reference.")
 	add_to_group(&"resettable")
-	pressure_plate.activation_changed.connect(_on_plate_activation_changed)
-	_set_open(pressure_plate.is_active != is_open_initial)
+	toggle_pad.toggled.connect(_on_pad_toggled)
+	_set_open(toggle_pad.is_active != is_open_initial)
 
 
 func capture_state() -> Variant:
@@ -39,8 +39,8 @@ func restore_state(state: Variant) -> void:
 	_set_open(bool(state))
 
 
-func _on_plate_activation_changed(active: bool) -> void:
-	_set_open(active != is_open_initial)
+func _on_pad_toggled() -> void:
+	_set_open(!is_open)
 
 
 func _set_open(open: bool) -> void:
@@ -62,29 +62,43 @@ func _apply_state() -> void:
 
 
 func _apply_appearance() -> void:
-	var half_width := door_size.x * 0.5
+	var half_width := size.x * 0.5
 
 	var visual := get_node_or_null("Visual") as Polygon2D
 	if visual != null:
 		visual.polygon = PackedVector2Array([
 			Vector2(-half_width, 0.0),
 			Vector2(half_width, 0.0),
-			Vector2(half_width, -door_size.y),
-			Vector2(-half_width, -door_size.y),
+			Vector2(half_width, -size.y),
+			Vector2(-half_width, -size.y),
 		])
-		visual.color = door_color
+		visual.color = gate_color
+	
+	var visualInner := visual.get_node_or_null("VisualInner") as Polygon2D
+	if visualInner != null:
+		visualInner.transform = Transform2D.IDENTITY
+
+		var maximum_inset := maxf(0.0,minf(size.x, size.y) * 0.5 - 0.5)
+		var inset := minf(10, maximum_inset)
+
+		visualInner.polygon = PackedVector2Array([
+			Vector2(-half_width + inset, -inset),
+			Vector2(half_width - inset, -inset),
+			Vector2(half_width - inset, -size.y + inset),
+			Vector2(-half_width + inset, -size.y + inset),
+		])
 
 	var collision_shape := get_node_or_null("CollisionShape2D") as CollisionShape2D
 	if collision_shape != null:
-		collision_shape.position = Vector2(0.0, -door_size.y * 0.5)
+		collision_shape.position = Vector2(0.0, -size.y * 0.5)
 		var rectangle := collision_shape.shape as RectangleShape2D
 		if rectangle != null:
-			rectangle.size = door_size
+			rectangle.size = size
 
 	var label := get_node_or_null("Label") as Label
 	if label != null:
 		var label_half_width := maxf(36.0, half_width)
 		label.offset_left = -label_half_width
 		label.offset_right = label_half_width
-		label.offset_top = -door_size.y - 34.0
-		label.offset_bottom = -door_size.y - 10.0
+		label.offset_top = -size.y - 34.0
+		label.offset_bottom = -size.y - 10.0
