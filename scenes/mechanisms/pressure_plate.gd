@@ -4,6 +4,12 @@ extends Area2D
 
 signal activation_changed(active: bool)
 
+@export_category("Geometry")
+@export_range(8.0, 512.0, 1.0, "suffix:px") var width: float = 44.0:
+	set(value):
+		width = maxf(value, 8.0)
+		_apply_geometry()
+
 @export_category("Appearance")
 @export var plate_color: Color = Color(1.0, 0.35, 0.25, 1.0):
 	set(value):
@@ -14,6 +20,7 @@ var is_active: bool = false
 
 
 func _ready() -> void:
+	_apply_geometry()
 	_apply_visual_state()
 	if Engine.is_editor_hint():
 		return
@@ -46,5 +53,24 @@ func _set_active(active: bool) -> void:
 func _apply_visual_state() -> void:
 	var visual := get_node_or_null("Visual") as Polygon2D
 	if visual != null:
-		visual.color = plate_color
 		visual.modulate = Color(1.0, 1.0, 1.0, 0.4) if is_active else Color.WHITE
+
+
+func _apply_geometry() -> void:
+	var collision_shape := get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if collision_shape != null:
+		var rectangle := collision_shape.shape as RectangleShape2D
+		if rectangle != null:
+			rectangle.size.x = width
+
+	var visual := get_node_or_null("Visual") as Polygon2D
+	if visual != null:
+		var half_width := width * 0.5
+		var corner_inset := minf(4.0, width * 0.25)
+		visual.polygon = PackedVector2Array([
+			Vector2(-half_width, 0.0),
+			Vector2(half_width, 0.0),
+			Vector2(half_width - corner_inset, -8.0),
+			Vector2(-half_width + corner_inset, -8.0),
+		])
+		visual.color = plate_color

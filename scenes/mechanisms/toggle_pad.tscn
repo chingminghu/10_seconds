@@ -3,13 +3,13 @@
 [ext_resource type="Script" uid="uid://dav58kknh1u35" path="res://scenes/mechanisms/toggle_pad.gd" id="1_brngf"]
 
 [sub_resource type="RectangleShape2D" id="DetectionShape"]
+resource_local_to_scene = true
 size = Vector2(44, 16)
 
 [node name="TogglePad" type="Area2D" unique_id=2146854833]
 collision_layer = 16
 collision_mask = 14
 script = ExtResource("1_brngf")
-pad_color = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1576709999]
 position = Vector2(0, -6)
@@ -29,5 +29,3 @@ theme_override_colors/font_color = Color(1, 0.55, 0.45, 1)
 theme_override_font_sizes/font_size = 14
 text = "PLATE"
 horizontal_alignment = 1
-
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -2,8 +2,14 @@
 class_name Door
 extends StaticBody2D
 
+enum ActivationRule {
+	ALL_ACTIVE,
+	ANY_ACTIVE,
+}
+
 @export_category("Configuration")
-@export var pressure_plate: PressurePlate
+@export var pressure_plates: Array[PressurePlate] = []
+@export var activation_rule: ActivationRule = ActivationRule.ANY_ACTIVE
 @export var is_open_initial: bool = false
 
 @export_category("Appearance")
@@ -25,10 +31,13 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
-	assert(pressure_plate != null, "Door requires a PressurePlate reference.")
+	assert(not pressure_plates.is_empty(), "Door requires at least one PressurePlate reference.")
 	add_to_group(&"resettable")
-	pressure_plate.activation_changed.connect(_on_plate_activation_changed)
-	_set_open(pressure_plate.is_active != is_open_initial)
+	for pressure_plate in pressure_plates:
+		assert(pressure_plate != null, "Door pressure_plates cannot contain null entries.")
+		if not pressure_plate.activation_changed.is_connected(_on_plate_activation_changed):
+			pressure_plate.activation_changed.connect(_on_plate_activation_changed)
+	_sync_from_pressure_plates()
 
 
 func capture_state() -> Variant:
@@ -39,8 +48,20 @@ func restore_state(state: Variant) -> void:
 	_set_open(bool(state))
 
 
-func _on_plate_activation_changed(active: bool) -> void:
-	_set_open(active != is_open_initial)
+func _on_plate_activation_changed(_active: bool) -> void:
+	_sync_from_pressure_plates()
+
+
+func _sync_from_pressure_plates() -> void:
+	var condition_met := activation_rule == ActivationRule.ALL_ACTIVE
+	for pressure_plate in pressure_plates:
+		if pressure_plate == null:
+			continue
+		if activation_rule == ActivationRule.ALL_ACTIVE:
+			condition_met = condition_met and pressure_plate.is_active
+		else:
+			condition_met = condition_met or pressure_plate.is_active
+	_set_open(condition_met != is_open_initial)
 
 
 func _set_open(open: bool) -> void:

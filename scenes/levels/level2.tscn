@@ -83,9 +83,9 @@ block_color = Color(0, 0, 0, 0)
 [node name="PressurePlateA" parent="Mechanisms" unique_id=1282055729 instance=ExtResource("11")]
 position = Vector2(329, 502)
 
-[node name="DoorA" parent="Mechanisms" unique_id=156418999 node_paths=PackedStringArray("pressure_plate") instance=ExtResource("12")]
+[node name="DoorA" parent="Mechanisms" unique_id=156418999 node_paths=PackedStringArray("pressure_plates") instance=ExtResource("12")]
 position = Vector2(518, 448)
-pressure_plate = NodePath("../PressurePlateA")
+pressure_plates = Array[NodePath]([NodePath("../PressurePlateA")])
 
 [node name="Objects" type="Node2D" parent="." unique_id=1907606723]
 position = Vector2(291, -319)

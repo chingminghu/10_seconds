@@ -3,7 +3,7 @@ class_name Gate
 extends StaticBody2D
 
 @export_category("Configuration")
-@export var toggle_pad: TogglePad
+@export var toggle_pads: Array[TogglePad] = []
 @export var is_open_initial: bool = false
 
 @export_category("Appearance")
@@ -25,10 +25,13 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
-	assert(toggle_pad != null, "Gate requires a TogglePad reference.")
+	assert(not toggle_pads.is_empty(), "Gate requires at least one TogglePad reference.")
 	add_to_group(&"resettable")
-	toggle_pad.toggled.connect(_on_pad_toggled)
-	_set_open(toggle_pad.is_active != is_open_initial)
+	for toggle_pad in toggle_pads:
+		assert(toggle_pad != null, "Gate toggle_pads cannot contain null entries.")
+		if not toggle_pad.toggled.is_connected(_on_pad_toggled):
+			toggle_pad.toggled.connect(_on_pad_toggled)
+	_set_open(is_open_initial)
 
 
 func capture_state() -> Variant:
@@ -40,6 +43,8 @@ func restore_state(state: Variant) -> void:
 
 
 func _on_pad_toggled() -> void:
+	# Every configured Pad emits the same action pulse; any one of them toggles
+	# this Gate exactly once.
 	_set_open(!is_open)
 
 
@@ -79,7 +84,7 @@ func _apply_appearance() -> void:
 		visualInner.transform = Transform2D.IDENTITY
 
 		var maximum_inset := maxf(0.0,minf(size.x, size.y) * 0.5 - 0.5)
-		var inset := minf(10, maximum_inset)
+		var inset := minf(8, maximum_inset)
 
 		visualInner.polygon = PackedVector2Array([
 			Vector2(-half_width + inset, -inset),

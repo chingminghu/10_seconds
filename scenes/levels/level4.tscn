@@ -83,17 +83,17 @@ block_color = Color(0, 0, 0, 0)
 
 [node name="Mechanisms" type="Node2D" parent="." unique_id=1614173136]
 
-[node name="Door1" parent="Mechanisms" unique_id=451842766 node_paths=PackedStringArray("pressure_plate") instance=ExtResource("2_dkd5g")]
+[node name="Door1" parent="Mechanisms" unique_id=451842766 node_paths=PackedStringArray("pressure_plates") instance=ExtResource("2_dkd5g")]
 position = Vector2(768, 192)
-pressure_plate = NodePath("../PressurePlate1")
+pressure_plates = Array[NodePath]([NodePath("../PressurePlate1")])
 door_size = Vector2(256, 32)
 
 [node name="PressurePlate1" parent="Mechanisms" unique_id=666184279 instance=ExtResource("3_iaq7h")]
 position = Vector2(416, 128)
 
-[node name="Door2" parent="Mechanisms" unique_id=1294575906 node_paths=PackedStringArray("pressure_plate") instance=ExtResource("2_dkd5g")]
+[node name="Door2" parent="Mechanisms" unique_id=1294575906 node_paths=PackedStringArray("pressure_plates") instance=ExtResource("2_dkd5g")]
 position = Vector2(768, 280)
-pressure_plate = NodePath("../PressurePlate2")
+pressure_plates = Array[NodePath]([NodePath("../PressurePlate2")])
 door_size = Vector2(256, 32)
 door_color = Color(0.18039216, 0.6627451, 0.7921569, 1)
 
@@ -101,9 +101,9 @@ door_color = Color(0.18039216, 0.6627451, 0.7921569, 1)
 position = Vector2(496, 128)
 plate_color = Color(0.18039216, 0.6627451, 0.7921569, 1)
 
-[node name="Door3" parent="Mechanisms" unique_id=245517748 node_paths=PackedStringArray("pressure_plate") instance=ExtResource("2_dkd5g")]
+[node name="Door3" parent="Mechanisms" unique_id=245517748 node_paths=PackedStringArray("pressure_plates") instance=ExtResource("2_dkd5g")]
 position = Vector2(768, 368)
-pressure_plate = NodePath("../PressurePlate3")
+pressure_plates = Array[NodePath]([NodePath("../PressurePlate3")])
 door_size = Vector2(256, 32)
 door_color = Color(0.6743225, 0.60720277, 0.1426509, 1)
 
@@ -111,9 +111,9 @@ door_color = Color(0.6743225, 0.60720277, 0.1426509, 1)
 position = Vector2(256, 128)
 plate_color = Color(0.6745098, 0.60784316, 0.14117648, 1)
 
-[node name="Door4" parent="Mechanisms" unique_id=857184586 node_paths=PackedStringArray("pressure_plate") instance=ExtResource("2_dkd5g")]
+[node name="Door4" parent="Mechanisms" unique_id=857184586 node_paths=PackedStringArray("pressure_plates") instance=ExtResource("2_dkd5g")]
 position = Vector2(768, 456)
-pressure_plate = NodePath("../PressurePlate4")
+pressure_plates = Array[NodePath]([NodePath("../PressurePlate4")])
 door_size = Vector2(256, 32)
 door_color = Color(0.6927116, 0.47213966, 0.9579492, 1)
 

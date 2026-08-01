@@ -1,13 +1,17 @@
 [gd_scene format=3 uid="uid://biq6lw7ai8ops"]
 
 [ext_resource type="Script" uid="uid://bbnk8ktci7tp4" path="res://scripts/level_manager.gd" id="1_xkqy0"]
-[ext_resource type="PackedScene" uid="uid://cqldufyueqo0c" path="res://scenes/levels/level_01.tscn" id="2_0tyro"]
-[ext_resource type="PackedScene" uid="uid://bvuv7xhxmpdvu" path="res://scenes/levels/level_02.tscn" id="3_hun0w"]
-[ext_resource type="PackedScene" uid="uid://bgikurl8nyrka" path="res://scenes/levels/level_03.tscn" id="4_u4kja"]
+[ext_resource type="PackedScene" uid="uid://cqldufyueqo0c" path="res://scenes/levels/level2.tscn" id="2_0tyro"]
+[ext_resource type="PackedScene" uid="uid://bcuu5clnmbddi" path="res://scenes/levels/level1.tscn" id="2_syqqh"]
+[ext_resource type="PackedScene" uid="uid://bvuv7xhxmpdvu" path="res://scenes/levels/level3.tscn" id="3_hun0w"]
+[ext_resource type="PackedScene" uid="uid://bgikurl8nyrka" path="res://scenes/levels/level4.tscn" id="4_u4kja"]
+[ext_resource type="PackedScene" uid="uid://btkb4xbb7tsw5" path="res://scenes/levels/level5.tscn" id="6_25ert"]
+[ext_resource type="PackedScene" uid="uid://baemro4p6dyg0" path="res://scenes/levels/level6.tscn" id="7_mi5g8"]
+[ext_resource type="PackedScene" uid="uid://bulrk78w0vy31" path="res://scenes/levels/level6.1.tscn" id="8_npjjd"]
 
 [node name="Main" type="Node" unique_id=801532627 node_paths=PackedStringArray("level_container")]
 script = ExtResource("1_xkqy0")
-level_scenes = Array[PackedScene]([ExtResource("2_0tyro"), ExtResource("3_hun0w"), ExtResource("4_u4kja")])
+level_scenes = Array[PackedScene]([ExtResource("2_syqqh"), ExtResource("2_0tyro"), ExtResource("3_hun0w"), ExtResource("4_u4kja"), ExtResource("6_25ert"), ExtResource("7_mi5g8"), ExtResource("8_npjjd")])
 level_container = NodePath("LevelContainer")
 
 [node name="LevelContainer" type="Node" parent="." unique_id=685242880]

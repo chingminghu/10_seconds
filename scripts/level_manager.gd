@@ -21,6 +21,7 @@ func _ready() -> void:
 
 
 func load_level(level_index: int) -> void:
+	print("loading level %d" % [level_index])
 	assert(
 		level_index >= 0 and level_index < level_scenes.size(),
 		"Level index %d is outside the configured level list." % level_index
