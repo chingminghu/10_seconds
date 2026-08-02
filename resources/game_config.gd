@@ -10,6 +10,9 @@ extends Resource
 @export_range(0.0, 3000.0, 10.0, "suffix:px/s²") var horizontal_acceleration: float = 1800.0
 @export_range(0.0, 3000.0, 10.0, "suffix:px/s²") var horizontal_deceleration: float = 2200.0
 @export_range(-1000.0, 0.0, 1.0, "suffix:px/s") var jump_velocity: float = -500.0
+@export_range(0.0, 2000.0, 1.0, "suffix:px/s") var terminal_velocity: float = 1000.0
 @export_range(0.0, 4000.0, 10.0, "suffix:px/s²") var gravity: float = 1200.0
+@export_range(1.0, 3.0, 0.1) var falling_gravity_multiplier: float = 1.5
+@export_range(0.0, 1.0, 0.05) var jump_hang_multiplier: float = 0.6
 @export_range(0.0, 0.5, 0.01, "suffix:s") var coyote_time: float = 0.10
 @export_range(0.0, 0.5, 0.01, "suffix:s") var jump_buffer_time: float = 0.10

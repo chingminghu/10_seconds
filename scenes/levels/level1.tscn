@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://duj7ie2vufaru" path="res://scripts/snapshot_controller.gd" id="9_db1r7"]
 [ext_resource type="PackedScene" uid="uid://cpp38pfxfd5yn" path="res://scenes/player/player.tscn" id="10_6gwlt"]
 [ext_resource type="Script" uid="uid://wsgsuilowg4n" path="res://scripts/run_controller.gd" id="11_c2nc4"]
-[ext_resource type="Resource" path="res://resources/game_config.tres" id="12_vhxpm"]
+[ext_resource type="Resource" uid="uid://cc63a4rtynx35" path="res://resources/game_config.tres" id="12_vhxpm"]
 [ext_resource type="PackedScene" path="res://scenes/echo/echo.tscn" id="13_arkx4"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="14_jqv5m"]
 

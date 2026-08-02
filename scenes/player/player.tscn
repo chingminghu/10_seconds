@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cpp38pfxfd5yn"]
 
 [ext_resource type="Script" uid="uid://b7pe7x0xee7ap" path="res://scenes/player/player.gd" id="1"]
-[ext_resource type="Resource" path="res://resources/game_config.tres" id="2"]
+[ext_resource type="Resource" uid="uid://cc63a4rtynx35" path="res://resources/game_config.tres" id="2"]
 [ext_resource type="Script" uid="uid://c2nu3o2uxyvud" path="res://scripts/recordable_transform_source.gd" id="3"]
 
 [sub_resource type="CapsuleShape2D" id="Capsule"]

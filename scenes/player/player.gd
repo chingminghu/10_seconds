@@ -9,6 +9,7 @@ var facing_direction: int = 1
 var _coyote_timer: float = 0.0
 var _jump_buffer_timer: float = 0.0
 var _movement_input_axis: float = 0.0
+var is_jumping: bool = false
 
 @onready var _visual: Polygon2D = $Visual
 
@@ -26,11 +27,21 @@ func _unhandled_input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		_coyote_timer = config.coyote_time
+		is_jumping = false
 	else:
 		_coyote_timer = maxf(_coyote_timer - delta, 0.0)
 
 	_jump_buffer_timer = maxf(_jump_buffer_timer - delta, 0.0)
-	velocity.y += config.gravity * delta
+	
+	var gravity := config.gravity
+	
+	if velocity.y >= 0:
+		gravity *= config.falling_gravity_multiplier
+	if is_jumping and abs(velocity.y) <= 50.0:
+		gravity *= config.jump_hang_multiplier
+	
+	velocity.y += gravity * delta
+	velocity.y = min(velocity.y, config.terminal_velocity)
 
 	if movement_enabled:
 		_apply_horizontal_movement(delta)
@@ -92,5 +103,6 @@ func _try_jump() -> void:
 		return
 
 	velocity.y = config.jump_velocity
+	is_jumping = true
 	_jump_buffer_timer = 0.0
 	_coyote_timer = 0.0
