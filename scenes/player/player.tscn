@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://cpp38pfxfd5yn"]
+[gd_scene format=3 uid="uid://cpp38pfxfd5yn"]
 
 [ext_resource type="Script" uid="uid://b7pe7x0xee7ap" path="res://scenes/player/player.gd" id="1"]
 [ext_resource type="Resource" path="res://resources/game_config.tres" id="2"]
@@ -8,23 +8,23 @@
 radius = 14.0
 height = 64.0
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" unique_id=2116596220]
 collision_layer = 2
 collision_mask = 13
 floor_snap_length = 6.0
 script = ExtResource("1")
 config = ExtResource("2")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1498587170]
 position = Vector2(0, -32)
 shape = SubResource("Capsule")
 
-[node name="Visual" type="Polygon2D" parent="."]
+[node name="Visual" type="Polygon2D" parent="." unique_id=1915021767]
 position = Vector2(0, -34.8)
 scale = Vector2(1, 1.65714)
 color = Color(0.2, 0.83, 1, 1)
 polygon = PackedVector2Array(-14, -14, 14, -14, 14, 14, 7, 21, -7, 21, -14, 14)
 
-[node name="RecordableTransformSource" type="Node" parent="." node_paths=PackedStringArray("target")]
+[node name="RecordableTransformSource" type="Node" parent="." unique_id=261175976 node_paths=PackedStringArray("target")]
 script = ExtResource("3")
 target = NodePath("..")

@@ -17,6 +17,8 @@ signal toggled()
 		_apply_visual_state()
 
 var was_pressed: bool = false
+var _attempt_active: bool = false
+
 
 func _ready() -> void:
 	_apply_geometry()
@@ -28,7 +30,7 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	if Engine.is_editor_hint():
+	if Engine.is_editor_hint() or not _attempt_active:
 		return
 
 	var is_pressed: bool = not get_overlapping_bodies().is_empty()
@@ -36,14 +38,24 @@ func _physics_process(_delta: float) -> void:
 		toggled.emit()
 	_set_pressed(is_pressed)
 
-#func _on_body_entered(_body: Node2D) -> void:
-	#if get_overlapping_bodies().size() == 1:
-		#_set_active(!is_active)
+
+func begin_attempt() -> void:
+	# Objects restored onto the Pad establish its initial occupancy; they did not
+	# enter during this attempt and must not emit a toggle pulse.
+	_set_pressed(not get_overlapping_bodies().is_empty())
+	_attempt_active = true
+
+
+func end_attempt() -> void:
+	_attempt_active = false
 
 func capture_state() -> Variant:
 	return was_pressed
 
 func restore_state(state: Variant) -> void:
+	# Physics overlap data is refreshed after transforms are restored. Keep edge
+	# detection disabled until begin_attempt() establishes the new baseline.
+	_attempt_active = false
 	_set_pressed(bool(state))
 
 func _set_pressed(is_pressed: bool) -> void:
