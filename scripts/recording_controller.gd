@@ -7,8 +7,8 @@ signal recording_completed(segment: RecordedSegment)
 signal frame_recorded(frame_count: int)
 
 @export var state_source: RecordableTransformSource
-@export_range(1.0, 60.0, 0.1, "suffix:s") var maximum_duration: float = 10.0
 
+var maximum_duration: float = 10.0
 var is_recording: bool = false
 var elapsed_time: float = 0.0
 var current_segment: RecordedSegment

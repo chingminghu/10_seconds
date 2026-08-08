@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://cufqoxkmfcfew"]
+
+[ext_resource type="Script" uid="uid://cxvy0nfvuin4" path="res://scenes/ui/hud_v2.gd" id="1_hud_v2"]
+
+[node name="HUD_V2" type="CanvasLayer" unique_id=1183021794]
+script = ExtResource("1_hud_v2")
+
+[node name="ChargePanel" type="ColorRect" parent="." unique_id=751303151]
+offset_left = 24.0
+offset_top = 20.0
+offset_right = 304.0
+offset_bottom = 78.0
+mouse_filter = 2
+color = Color(0.03, 0.04, 0.06, 0.88)
+
+[node name="ChargeLabel" type="Label" parent="ChargePanel" unique_id=618597183]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_right = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.84, 0.32, 1)
+theme_override_font_sizes/font_size = 22
+text = "CHARGE  0 / 1"
+vertical_alignment = 1
+
+[node name="RecordingPanel" type="ColorRect" parent="." unique_id=883759466]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = -304.0
+offset_right = 140.0
+offset_bottom = -204.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.03, 0.04, 0.06, 0.88)
+
+[node name="RecordingLabel" type="Label" parent="RecordingPanel" unique_id=1966348958]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.22, 0.22, 1)
+theme_override_font_sizes/font_size = 30
+text = "REC
+10.0 s"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PromptLabel" type="Label" parent="." unique_id=1420398807]
+unique_name_in_owner = true
+offset_left = 100.0
+offset_top = 564.0
+offset_right = 1052.0
+offset_bottom = 614.0
+theme_override_colors/font_color = Color(1, 0.84, 0.3, 1)
+theme_override_font_sizes/font_size = 20
+text = "Press J  RECORD / STOP | K PLAY | R restart"
+horizontal_alignment = 1

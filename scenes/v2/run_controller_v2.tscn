@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cs6a8hpmvmpia"]
+
+[ext_resource type="Script" uid="uid://chhf7n163vm8j" path="res://scripts/v2/run_controller_v2.gd" id="1"]
+
+[node name="RunControllerV2" type="Node" unique_id=55683294]
+script = ExtResource("1")
