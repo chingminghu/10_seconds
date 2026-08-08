@@ -28,6 +28,30 @@ theme_override_font_sizes/font_size = 22
 text = "CHARGE  0 / 1"
 vertical_alignment = 1
 
+[node name="RecordQueuePanel" type="ColorRect" parent="." unique_id=1488622846]
+offset_left = 837.0
+offset_top = 20.0
+offset_right = 1117.0
+offset_bottom = 78.0
+mouse_filter = 2
+color = Color(0.03, 0.04, 0.06, 0.88)
+
+[node name="RecordQueueLabel" type="Label" parent="RecordQueuePanel" unique_id=502098040]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_right = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.6961296, 0.00014073432, 0.61602885, 1)
+theme_override_font_sizes/font_size = 22
+text = "QUEUE  0 / 1"
+horizontal_alignment = 2
+vertical_alignment = 1
+
 [node name="RecordingPanel" type="ColorRect" parent="." unique_id=883759466]
 unique_name_in_owner = true
 anchors_preset = 8

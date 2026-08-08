@@ -4,18 +4,19 @@ extends CanvasLayer
 @export var run_controller: RunControllerV2
 
 @onready var _charge_label: Label = %ChargeLabel
+@onready var _record_queue_label: Label = %RecordQueueLabel
 @onready var _recording_panel: Control = %RecordingPanel
 @onready var _recording_label: Label = %RecordingLabel
 
 
 func _ready() -> void:
 	assert(run_controller != null, "HUD_V2 requires a RunControllerV2 reference.")
-
 	run_controller.recording_charges_changed.connect(_on_recording_charges_changed)
 	run_controller.recording_started.connect(_on_recording_started)
 	run_controller.recording_finished.connect(_on_recording_finished)
 	run_controller.reset_started.connect(_on_reset_started)
 	run_controller.level_completed.connect(_on_level_completed)
+	run_controller.recording_queue_changed.connect(_on_recording_queue_changed)
 
 	_on_recording_charges_changed(
 		run_controller.recording_charges,
@@ -31,6 +32,8 @@ func _process(_delta: float) -> void:
 func _on_recording_charges_changed(available: int, maximum: int) -> void:
 	_charge_label.text = "CHARGE  %d / %d" % [available, maximum]
 
+func _on_recording_queue_changed(current_size: int, capacity: int) -> void:
+	_record_queue_label.text = "QUEUE %d / %d" % [current_size, capacity]	
 
 func _on_recording_started(_segment: RecordedSegment) -> void:
 	_update_recording_display()
@@ -63,3 +66,4 @@ func _update_recording_display() -> void:
 	)
 	_recording_label.text = "REC\n%.1f s" % remaining_seconds
 	_recording_panel.show()
+	

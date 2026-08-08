@@ -169,6 +169,7 @@ func start_playback() -> bool:
 	_active_echo.playback_completed.connect(_on_echo_playback_completed)
 	_active_echo.play_segment_reverse(segment)
 	playback_started.emit(segment)
+	_try_collect_overlapping_orbs()
 	return true
 
 

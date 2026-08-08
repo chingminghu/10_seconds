@@ -115,7 +115,6 @@ config = ExtResource("6_spsuf")
 echo_scene = ExtResource("7_bhkhi")
 echo_container = NodePath("../EchoContainer")
 snapshot_controller = NodePath("../SnapshotController")
-recording_capacity = 16
 
 [node name="RecordingController" type="Node" parent="." unique_id=1815970254 node_paths=PackedStringArray("state_source")]
 script = ExtResource("8_fyl4j")
