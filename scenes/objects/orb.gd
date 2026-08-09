@@ -72,8 +72,9 @@ func _apply_state() -> void:
 	var inner_mark := get_node_or_null("InnerMark") as Line2D
 	if visual != null:
 		visual.visible = is_active
-	#if inner_mark != null:
-		#inner_mark.visible = is_active
+	if !renewable:
+		if inner_mark != null:
+			inner_mark.visible = is_active
 
 
 func _request_touch_for_overlapping_player() -> void:

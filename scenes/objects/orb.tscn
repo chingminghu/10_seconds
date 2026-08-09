@@ -13,12 +13,14 @@ script = ExtResource("1_lqgmy")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=727063098]
 shape = SubResource("CircleShape2D_lqgmy")
 
+[node name="Visual" type="Polygon2D" parent="." unique_id=2052135452]
+color = Color(0.52033925, 0.16447598, 0.73549736, 1)
+polygon = PackedVector2Array(-8, -19.2, 8, -19.2, 19.2, -8, 19.2, 8, 8, 19.2, -8, 19.2, -19.2, 8, -19.2, -8)
+
 [node name="InnerMark" type="Line2D" parent="." unique_id=984883964]
+scale = Vector2(0.925, 0.925)
 points = PackedVector2Array(-8, -19.2, 8, -19.2, 19.2, -8, 19.2, 8, 8, 19.2, -8, 19.2, -19.2, 8, -19.2, -8, -8, -19.2, 8, -19.2)
 width = 3.0
-
-[node name="Visual" type="Polygon2D" parent="." unique_id=2052135452]
-color = Color(0.46373916, 0.13289323, 0.65951663, 1)
-polygon = PackedVector2Array(-8, -19.2, 8, -19.2, 19.2, -8, 19.2, 8, 8, 19.2, -8, 19.2, -19.2, 8, -19.2, -8)
+default_color = Color(0.8226247, 0.6435435, 0.97274905, 1)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
