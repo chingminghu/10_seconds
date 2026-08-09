@@ -97,17 +97,15 @@ anchor_id = &"A"
 player_spawn_offset = Vector2(0, -1)
 is_start_anchor = true
 
-[node name="Anchors" type="Node2D" parent="." unique_id=1944177455]
-
 [node name="Goal" parent="." unique_id=520439113 instance=ExtResource("4_2n60p")]
 position = Vector2(729, 202)
 
 [node name="EchoContainer" type="Node2D" parent="." unique_id=1044163385]
 
-[node name="RunController" parent="." unique_id=642834870 node_paths=PackedStringArray("player", "spawn_anchor", "orbs_root", "goal", "recording_controller", "echo_container", "snapshot_controller") instance=ExtResource("5_273nm")]
+[node name="RunController" parent="." unique_id=642834870 node_paths=PackedStringArray("player", "spawn_point", "orbs_root", "goal", "recording_controller", "echo_container", "snapshot_controller") instance=ExtResource("5_273nm")]
 unique_name_in_owner = true
 player = NodePath("../Player")
-spawn_anchor = NodePath("../AnchorA")
+spawn_point = NodePath("../AnchorA")
 orbs_root = NodePath("../Orbs")
 goal = NodePath("../Goal")
 recording_controller = NodePath("../RecordingController")

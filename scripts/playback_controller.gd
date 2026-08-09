@@ -7,6 +7,7 @@ signal playback_motion_applied(motion: Vector2, delta: float)
 signal playback_finished
 
 @export var playback_target: Node2D
+@export var progress_bar: TextureProgressBar
 
 var is_playing: bool = false
 var playback_time: float = 0.0
@@ -23,6 +24,7 @@ func play_reverse(segment: RecordedSegment) -> void:
 	playback_time = segment.duration
 	is_playing = true
 	_apply_frame(_segment.get_last_frame())
+	_apply_progress_bar(playback_time / _segment.duration)
 	playback_started.emit(segment)
 	playback_time_changed.emit(playback_time, _segment.duration)
 
@@ -43,6 +45,7 @@ func _physics_process(delta: float) -> void:
 	playback_time = 0.0 if reaches_start else playback_time - delta
 	var previous_position := playback_target.global_position
 	_apply_frame(_segment.sample_at(playback_time))
+	_apply_progress_bar(playback_time / _segment.duration)
 	playback_motion_applied.emit(playback_target.global_position - previous_position, delta)
 	playback_time_changed.emit(playback_time, _segment.duration)
 
@@ -56,3 +59,8 @@ func _apply_frame(frame: RecordedFrame) -> void:
 	playback_target.global_rotation = frame.rotation
 	if playback_target.has_method(&"apply_recorded_presentation"):
 		playback_target.call(&"apply_recorded_presentation", frame)
+		
+func _apply_progress_bar(value: float) -> void:
+	if progress_bar == null:
+		return
+	progress_bar.value = value

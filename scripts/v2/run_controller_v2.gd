@@ -23,7 +23,7 @@ const RESET_KEY := KEY_R
 
 @export_category("Scene References")
 @export var player: PlayerController
-@export var spawn_anchor: Anchor
+@export var spawn_point: Node2D
 @export var orbs_root: Node
 @export var goal: LevelGoal
 @export var recording_controller: RecordingController
@@ -60,7 +60,7 @@ var _reset_generation: int = 0
 
 func _ready() -> void:
 	assert(player != null, "RunControllerV2 requires a PlayerController reference.")
-	assert(spawn_anchor != null, "RunControllerV2 requires a spawn Anchor reference.")
+	assert(spawn_point != null, "RunControllerV2 requires a spawn Point reference.")
 	assert(orbs_root != null, "RunControllerV2 requires an Orbs root reference.")
 	assert(goal != null, "RunControllerV2 requires a LevelGoal reference.")
 	assert(recording_controller != null, "RunControllerV2 requires a RecordingController reference.")
@@ -70,11 +70,11 @@ func _ready() -> void:
 	assert(snapshot_controller != null, "RunControllerV2 requires a SnapshotController.")
 	
 	player.set_movement_enabled(false)
-	_initial_player_transform = spawn_anchor.get_spawn_transform()
+	_initial_player_transform = spawn_point.global_transform
 	player.teleport_to(_initial_player_transform)
 	_normal_player_process_mode = player.process_mode
 	player.process_mode = Node.PROCESS_MODE_DISABLED
-	spawn_anchor.monitoring = false
+	#spawn_point.monitoring = false
 	recording_controller.maximum_duration = maximum_recording_duration
 	recording_controller.frame_recorded.connect(_on_recording_frame_recorded)
 	goal.player_reached_goal.connect(_on_goal_reached)
