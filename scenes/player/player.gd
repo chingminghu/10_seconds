@@ -4,6 +4,12 @@ extends CharacterBody2D
 @export var config: GameConfig
 @export_range(0.0, 5000.0, 50.0, "suffix:N") var box_push_force: float = 1800.0
 
+@export_category("Squash And Stretch")
+@export_range(0.0, 0.5, 0.01) var max_vertical_deformation: float = 0.25
+@export_range(0.0, 1000.0, 10.0, "suffix:px/s") var minimum_deformation_speed_difference: float = 200.0
+@export_range(100.0, 2000.0, 10.0, "suffix:px/s") var full_deformation_speed_difference: float = 700.0
+@export_range(0.1, 10.0, 0.1, "suffix:/s") var deformation_recovery_speed: float = 3.5
+
 @export_category("Lift Boost")
 
 
@@ -16,6 +22,8 @@ var _stored_lift_velocity: Vector2 = Vector2.ZERO
 var _lift_boost_memory_timer: float = 0.0
 var _skip_lift_boost_capture_once: bool = false
 var is_jumping: bool = false
+var _vertical_deformation: float = 0.0
+var _base_visual_scale: Vector2 = Vector2.ONE
 
 @onready var _visual: Polygon2D = $Visual
 
@@ -23,6 +31,7 @@ var is_jumping: bool = false
 func _ready() -> void:
 	add_to_group(&"player")
 	assert(config != null, "PlayerController requires a GameConfig resource.")
+	_initialize_squash_and_stretch()
 	# Lift boost is applied explicitly by _try_jump(); prevent CharacterBody2D from
 	# adding the platform velocity a second time when the player leaves it.
 	platform_on_leave = CharacterBody2D.PLATFORM_ON_LEAVE_DO_NOTHING
@@ -34,7 +43,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	_recover_visual_deformation(delta)
 	_update_lift_boost_memory(delta)
+	var was_on_floor := is_on_floor()
 
 	if is_on_floor():
 		_coyote_timer = config.coyote_time
@@ -53,7 +64,13 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0.0, config.horizontal_deceleration * delta)
 		_jump_buffer_timer = 0.0
 
+	var vertical_velocity_before_move := velocity.y
 	move_and_slide()
+	if not was_on_floor and is_on_floor():
+		_trigger_vertical_deformation(
+			absf(velocity.y - vertical_velocity_before_move),
+			false
+		)
 	_push_rigid_bodies()
 
 
@@ -71,6 +88,7 @@ func teleport_to(target_transform: Transform2D) -> void:
 	_jump_buffer_timer = 0.0
 	_clear_lift_boost()
 	_skip_lift_boost_capture_once = true
+	_reset_squash_and_stretch()
 
 
 func _apply_horizontal_movement(delta: float) -> void:
@@ -88,7 +106,50 @@ func _apply_horizontal_movement(delta: float) -> void:
 
 	if not is_zero_approx(input_axis):
 		facing_direction = 1 if input_axis > 0.0 else -1
-		_visual.scale.x = float(facing_direction)
+		_apply_visual_deformation()
+
+
+func _initialize_squash_and_stretch() -> void:
+	_base_visual_scale = Vector2(absf(_visual.scale.x), absf(_visual.scale.y))
+	_apply_visual_deformation()
+
+
+func _recover_visual_deformation(delta: float) -> void:
+	_vertical_deformation = move_toward(
+		_vertical_deformation,
+		0.0,
+		deformation_recovery_speed * delta
+	)
+	_apply_visual_deformation()
+
+
+func _trigger_vertical_deformation(speed_difference: float, stretch: bool) -> void:
+	var deformation_range := maxf(
+		full_deformation_speed_difference - minimum_deformation_speed_difference,
+		1.0
+	)
+	var intensity := clampf(
+		(absf(speed_difference) - minimum_deformation_speed_difference) / deformation_range,
+		0.0,
+		1.0
+	)
+	var direction := 1.0 if stretch else -1.0
+	_vertical_deformation = direction * max_vertical_deformation * intensity
+	_apply_visual_deformation()
+
+
+func _apply_visual_deformation() -> void:
+	var vertical_scale := maxf(1.0 + _vertical_deformation, 0.01)
+	_visual.scale = Vector2(
+		_base_visual_scale.x * float(facing_direction),
+		_base_visual_scale.y * vertical_scale
+	)
+
+
+func _reset_squash_and_stretch() -> void:
+	_vertical_deformation = 0.0
+	if is_node_ready():
+		_apply_visual_deformation()
 
 
 func _apply_verticle_movement(delta:float) -> void:
@@ -164,7 +225,12 @@ func _try_jump() -> void:
 
 	var lift_boost := _consume_lift_boost()
 	velocity.x += lift_boost.x
+	var vertical_velocity_before_jump := velocity.y
 	velocity.y = config.jump_velocity + lift_boost.y
+	_trigger_vertical_deformation(
+		absf(velocity.y - vertical_velocity_before_jump),
+		true
+	)
 	#print("velocity: ", [velocity.x, velocity.y])
 	is_jumping = true
 	_jump_buffer_timer = 0.0

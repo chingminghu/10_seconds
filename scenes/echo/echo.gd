@@ -6,6 +6,7 @@ signal playback_completed(echo: Echo)
 @export_range(0.0, 5000.0, 50.0, "suffix:N") var box_push_force: float = 1800.0
 
 @onready var _visual: Polygon2D = $Visual
+@onready var _ghost_outline: Line2D = $GhostOutline
 @onready var _collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var _playback_controller: PlaybackController = $PlaybackController
 @onready var _box_interaction_area: Area2D = $BoxInteractionArea
@@ -29,7 +30,10 @@ func stop_playback() -> void:
 
 
 func apply_recorded_presentation(frame: RecordedFrame) -> void:
-	_visual.scale.x = float(frame.facing_direction)
+	var visual_scale := frame.visual_scale
+	visual_scale.x = absf(visual_scale.x) * float(frame.facing_direction)
+	_visual.scale = visual_scale
+	_ghost_outline.scale = visual_scale
 
 
 func _on_playback_motion_applied(motion: Vector2, _delta: float) -> void:

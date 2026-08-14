@@ -3,6 +3,7 @@ extends Node
 
 @export var target: Node2D
 @export var facing_property: StringName = &"facing_direction"
+@export var visual_target: Node2D
 @export var animated_sprite: AnimatedSprite2D
 
 
@@ -16,6 +17,8 @@ func capture_frame(timestamp: float) -> RecordedFrame:
 	frame.global_position = target.global_position
 	frame.rotation = target.global_rotation
 	frame.facing_direction = _read_facing_direction()
+	if visual_target != null:
+		frame.visual_scale = visual_target.scale
 
 	if animated_sprite != null:
 		frame.animation_name = animated_sprite.animation
