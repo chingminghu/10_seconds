@@ -10,8 +10,8 @@
 [ext_resource type="Script" uid="uid://c1r5wldgu73nm" path="res://scripts/recording_controller.gd" id="8_rx4po"]
 [ext_resource type="Script" uid="uid://duj7ie2vufaru" path="res://scripts/snapshot_controller.gd" id="9_e257y"]
 [ext_resource type="Script" uid="uid://wsgsuilowg4n" path="res://scripts/run_controller.gd" id="10_7xq2f"]
-[ext_resource type="Resource" path="res://resources/game_config.tres" id="11_xmmsn"]
-[ext_resource type="PackedScene" path="res://scenes/echo/echo.tscn" id="12_vjdek"]
+[ext_resource type="Resource" uid="uid://cc63a4rtynx35" path="res://resources/game_config.tres" id="11_xmmsn"]
+[ext_resource type="PackedScene" uid="uid://crnqak56tx1om" path="res://scenes/echo/echo.tscn" id="12_vjdek"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="13_qw2ud"]
 
 [node name="Level03" type="Node2D" unique_id=467344507]

@@ -8,8 +8,8 @@
 [ext_resource type="Script" uid="uid://c1r5wldgu73nm" path="res://scripts/recording_controller.gd" id="7_dscar"]
 [ext_resource type="Script" uid="uid://duj7ie2vufaru" path="res://scripts/snapshot_controller.gd" id="8_01hg1"]
 [ext_resource type="Script" uid="uid://wsgsuilowg4n" path="res://scripts/run_controller.gd" id="9_v5pqk"]
-[ext_resource type="Resource" path="res://resources/game_config.tres" id="10_m2te4"]
-[ext_resource type="PackedScene" path="res://scenes/echo/echo.tscn" id="11_kxbgd"]
+[ext_resource type="Resource" uid="uid://cc63a4rtynx35" path="res://resources/game_config.tres" id="10_m2te4"]
+[ext_resource type="PackedScene" uid="uid://crnqak56tx1om" path="res://scenes/echo/echo.tscn" id="11_kxbgd"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="12_lky54"]
 
 [sub_resource type="RectangleShape2D" id="Step2Shape"]

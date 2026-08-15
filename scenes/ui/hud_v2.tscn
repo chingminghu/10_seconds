@@ -93,3 +93,19 @@ theme_override_colors/font_color = Color(1, 0.84, 0.3, 1)
 theme_override_font_sizes/font_size = 20
 text = "Press J  RECORD / STOP | K PLAY | R restart"
 horizontal_alignment = 1
+
+[node name="SpeedLabel" type="Label" parent="." unique_id=1345984983]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = 78.0
+offset_right = -921.0
+offset_bottom = -514.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.84, 0.32, 1)
+theme_override_font_sizes/font_size = 22
+text = "SPEED: 0 px/s"
+vertical_alignment = 1

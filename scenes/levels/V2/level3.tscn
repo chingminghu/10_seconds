@@ -1,0 +1,122 @@
+[gd_scene format=4 uid="uid://c72nt81w8wsio"]
+
+[ext_resource type="Script" uid="uid://do064rvb7o4fp" path="res://scenes/levels/level_base.gd" id="1_8vrm0"]
+[ext_resource type="PackedScene" path="res://scenes/environment/level_block.tscn" id="2_8x7m1"]
+[ext_resource type="PackedScene" uid="uid://7kk60dynj5hn" path="res://scenes/objects/orb.tscn" id="3_6rsyo"]
+[ext_resource type="PackedScene" uid="uid://c82cf441rhv72" path="res://scenes/goal/goal.tscn" id="4_cib7w"]
+[ext_resource type="PackedScene" uid="uid://cs6a8hpmvmpia" path="res://scenes/v2/run_controller_v2.tscn" id="5_vfes5"]
+[ext_resource type="Resource" uid="uid://cc63a4rtynx35" path="res://resources/game_config.tres" id="6_4cf7j"]
+[ext_resource type="PackedScene" uid="uid://crnqak56tx1om" path="res://scenes/echo/echo.tscn" id="7_xhlfn"]
+[ext_resource type="Script" uid="uid://c1r5wldgu73nm" path="res://scripts/recording_controller.gd" id="8_eixbc"]
+[ext_resource type="Script" uid="uid://duj7ie2vufaru" path="res://scripts/snapshot_controller.gd" id="9_3enu6"]
+[ext_resource type="PackedScene" uid="uid://cpp38pfxfd5yn" path="res://scenes/player/player.tscn" id="10_qybq0"]
+[ext_resource type="Script" uid="uid://djrt8r4ao4ja4" path="res://resources/game_config.gd" id="11_6rsyo"]
+[ext_resource type="PackedScene" uid="uid://cufqoxkmfcfew" path="res://scenes/ui/hud_v2.tscn" id="11_10b7c"]
+[ext_resource type="TileSet" uid="uid://b2inxf4ddwvke" path="res://scenes/environment/levelblock_tileset.tres" id="12_8x7m1"]
+
+[sub_resource type="Resource" id="Resource_cib7w"]
+script = ExtResource("11_6rsyo")
+
+[node name="Level01" type="Node2D" unique_id=1949869041]
+script = ExtResource("1_8vrm0")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1828415403]
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 2
+color = Color(0.055, 0.065, 0.09, 1)
+
+[node name="GridLines" type="Node2D" parent="." unique_id=475863703]
+
+[node name="Line1" type="Line2D" parent="GridLines" unique_id=1716120167]
+points = PackedVector2Array(0, 160, 1152, 160)
+width = 1.0
+default_color = Color(0.14, 0.16, 0.2, 1)
+
+[node name="Line2" type="Line2D" parent="GridLines" unique_id=2114069915]
+points = PackedVector2Array(0, 320, 1152, 320)
+width = 1.0
+default_color = Color(0.14, 0.16, 0.2, 1)
+
+[node name="Line3" type="Line2D" parent="GridLines" unique_id=1508766453]
+points = PackedVector2Array(0, 480, 1152, 480)
+width = 1.0
+default_color = Color(0.14, 0.16, 0.2, 1)
+
+[node name="StaticGeometry" type="Node2D" parent="." unique_id=1427557625]
+position = Vector2(-1, 0)
+
+[node name="LeftWall" parent="StaticGeometry" unique_id=976292271 instance=ExtResource("2_8x7m1")]
+position = Vector2(-16, 324)
+size = Vector2(32, 648)
+block_color = Color(0, 0, 0, 0)
+
+[node name="RightWall" parent="StaticGeometry" unique_id=833627435 instance=ExtResource("2_8x7m1")]
+position = Vector2(1168, 324)
+size = Vector2(32, 648)
+block_color = Color(0, 0, 0, 0)
+
+[node name="Ceiling" parent="StaticGeometry" unique_id=317061299 instance=ExtResource("2_8x7m1")]
+position = Vector2(576, -12)
+size = Vector2(1152, 24)
+block_color = Color(0, 0, 0, 0)
+
+[node name="Mechanisms" type="Node2D" parent="." unique_id=1399965887]
+
+[node name="Objects" type="Node2D" parent="." unique_id=592942102]
+position = Vector2(291, -319)
+
+[node name="Orbs" type="Node2D" parent="." unique_id=2041422416]
+position = Vector2(291, -319)
+
+[node name="Orb" parent="Orbs" unique_id=1413524283 instance=ExtResource("3_6rsyo")]
+position = Vector2(84, 871)
+
+[node name="Orb2" parent="Orbs" unique_id=302039766 instance=ExtResource("3_6rsyo")]
+position = Vector2(460, 871)
+renewable = false
+
+[node name="SpawnPoint" type="Node2D" parent="." unique_id=1894685381]
+position = Vector2(33, 224)
+
+[node name="Goal" parent="." unique_id=520439113 instance=ExtResource("4_cib7w")]
+position = Vector2(1121, 224)
+
+[node name="EchoContainer" type="Node2D" parent="." unique_id=1044163385]
+
+[node name="RunController" parent="." unique_id=642834870 node_paths=PackedStringArray("player", "spawn_point", "orbs_root", "goal", "recording_controller", "echo_container", "snapshot_controller") instance=ExtResource("5_vfes5")]
+unique_name_in_owner = true
+player = NodePath("../Player")
+spawn_point = NodePath("../SpawnPoint")
+orbs_root = NodePath("../Orbs")
+goal = NodePath("../Goal")
+recording_controller = NodePath("../RecordingController")
+config = ExtResource("6_4cf7j")
+echo_scene = ExtResource("7_xhlfn")
+echo_container = NodePath("../EchoContainer")
+snapshot_controller = NodePath("../SnapshotController")
+starting_recording_charges = 1
+
+[node name="RecordingController" type="Node" parent="." unique_id=1815970254 node_paths=PackedStringArray("state_source")]
+script = ExtResource("8_eixbc")
+state_source = NodePath("../Player/RecordableTransformSource")
+
+[node name="SnapshotController" type="Node" parent="." unique_id=1967257490 node_paths=PackedStringArray("snapshot_root")]
+script = ExtResource("9_3enu6")
+snapshot_root = NodePath("..")
+
+[node name="Player" parent="." unique_id=1951899725 instance=ExtResource("10_qybq0")]
+position = Vector2(33, 224)
+config = SubResource("Resource_cib7w")
+full_deformation_speed_difference = 760.0
+
+[node name="FixedCamera" type="Camera2D" parent="." unique_id=375887397]
+position = Vector2(576, 324)
+
+[node name="HUD_V2" parent="." unique_id=731338219 node_paths=PackedStringArray("run_controller", "Player") instance=ExtResource("11_10b7c")]
+run_controller = NodePath("../RunController")
+Player = NodePath("../Player")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1071542715]
+tile_map_data = PackedByteArray("AAAAAAcAAAAAAAIAAAABAAcAAAAAAAIAAQABAAgAAAAAAAEAAwABAAkAAAAAAAEAAwABAAoAAAAAAAEAAwABAAsAAAAAAAEAAwABAAwAAAAAAAEAAwABAA0AAAAAAAEAAwABAA4AAAAAAAEAAwABAA8AAAAAAAEAAwABABAAAAAAAAEAAwABABEAAAAAAAEAAwABABIAAAAAAAEAAwAAABIAAAAAAAEAAgAAABEAAAAAAAEAAgAAABAAAAAAAAEAAgAAAA8AAAAAAAEAAgAAAA4AAAAAAAEAAgAAAA0AAAAAAAEAAgAAAAwAAAAAAAEAAgAAAAsAAAAAAAEAAgAAAAoAAAAAAAEAAgAAAAkAAAAAAAEAAgAAAAgAAAAAAAEAAgAiAAcAAAAAAAIAAAAjAAcAAAAAAAIAAQAjAAgAAAAAAAEAAwAjAAkAAAAAAAEAAwAjAAoAAAAAAAEAAwAjAAsAAAAAAAEAAwAjAAwAAAAAAAEAAwAjAA0AAAAAAAEAAwAjAA4AAAAAAAEAAwAjAA8AAAAAAAEAAwAjABAAAAAAAAEAAwAjABEAAAAAAAEAAwAjABIAAAAAAAEAAwAiABIAAAAAAAEAAgAiABEAAAAAAAEAAgAiABAAAAAAAAEAAgAiAA8AAAAAAAEAAgAiAA4AAAAAAAEAAgAiAA0AAAAAAAEAAgAiAAwAAAAAAAEAAgAiAAsAAAAAAAEAAgAiAAoAAAAAAAEAAgAiAAkAAAAAAAEAAgAiAAgAAAAAAAEAAgAAABMAAAAAAAUAAAAAABQAAAAAAAUAAAABABMAAAAAAAUAAAABABQAAAAAAAUAAAACABMAAAAAAAUAAAACABQAAAAAAAUAAAADABMAAAAAAAUAAAADABQAAAAAAAUAAAAEABMAAAAAAAUAAAAEABQAAAAAAAUAAAAFABMAAAAAAAUAAAAFABQAAAAAAAUAAAAGABMAAAAAAAUAAAAGABQAAAAAAAUAAAAHABMAAAAAAAUAAAAHABQAAAAAAAUAAAAIABMAAAAAAAUAAAAIABQAAAAAAAUAAAAJABMAAAAAAAUAAAAJABQAAAAAAAUAAAAKABMAAAAAAAUAAAAKABQAAAAAAAUAAAALABMAAAAAAAUAAAALABQAAAAAAAUAAAAMABMAAAAAAAUAAAAMABQAAAAAAAUAAAANABMAAAAAAAUAAAANABQAAAAAAAUAAAAOABMAAAAAAAUAAAAOABQAAAAAAAUAAAAPABMAAAAAAAUAAAAPABQAAAAAAAUAAAAQABMAAAAAAAUAAAAQABQAAAAAAAUAAAARABMAAAAAAAUAAAARABQAAAAAAAUAAAASABMAAAAAAAUAAAASABQAAAAAAAUAAAATABMAAAAAAAUAAAATABQAAAAAAAUAAAAUABMAAAAAAAUAAAAUABQAAAAAAAUAAAAVABMAAAAAAAUAAAAVABQAAAAAAAUAAAAWABMAAAAAAAUAAAAWABQAAAAAAAUAAAAXABMAAAAAAAUAAAAXABQAAAAAAAUAAAAYABMAAAAAAAUAAAAYABQAAAAAAAUAAAAZABMAAAAAAAUAAAAZABQAAAAAAAUAAAAaABMAAAAAAAUAAAAaABQAAAAAAAUAAAAbABMAAAAAAAUAAAAbABQAAAAAAAUAAAAcABMAAAAAAAUAAAAcABQAAAAAAAUAAAAdABMAAAAAAAUAAAAdABQAAAAAAAUAAAAeABMAAAAAAAUAAAAeABQAAAAAAAUAAAAfABMAAAAAAAUAAAAfABQAAAAAAAUAAAAgABMAAAAAAAUAAAAgABQAAAAAAAUAAAAhABMAAAAAAAUAAAAhABQAAAAAAAUAAAAiABMAAAAAAAUAAAAiABQAAAAAAAUAAAAjABMAAAAAAAUAAAAjABQAAAAAAAUAAAAYAAwAAAAAAAMAAQAXAAwAAAACAAEAAAAWAAwAAAAAAAMAAAAWAAgAAAAAAAMAAAAXAAgAAAABAAIAAQAXAAkAAAACAAIAAQAXAAoAAAACAAIAAQAXAAsAAAACAAIAAQAUAAgAAAAAAAMAAQATAAgAAAACAAIAAAASAAgAAAABAAIAAAASAAkAAAACAAIAAQASAAoAAAABAAIAAgATAAoAAAACAAIAAAAUAAoAAAABAAIAAQAUAAsAAAACAAIAAQAUAAwAAAABAAIAAwATAAwAAAACAAIAAAASAAwAAAAAAAMAAAAOAAgAAAAAAAMAAgAOAAkAAAACAAIAAQAOAAoAAAABAAIAAgAPAAoAAAACAAIAAAAQAAoAAAACAAEAAgAQAAgAAAAAAAMAAgAQAAkAAAACAAIAAQAQAAsAAAACAAIAAQAQAAwAAAAAAAMAAwAKAAgAAAAAAAMAAAALAAgAAAABAAIAAQALAAkAAAACAAIAAQALAAoAAAACAAIAAQALAAsAAAACAAIAAQALAAwAAAACAAEAAAAMAAwAAAAAAAMAAQAKAAwAAAAAAAMAAAAGAAgAAAAAAAMAAAAHAAgAAAABAAIAAQAHAAkAAAACAAIAAQAHAAoAAAACAAIAAQAHAAsAAAACAAIAAQAHAAwAAAACAAEAAAAIAAwAAAAAAAMAAQAGAAwAAAAAAAMAAAAaAAgAAAAAAAMAAgAaAAkAAAACAAIAAQAaAAoAAAABAAIAAgAbAAoAAAACAAIAAAAcAAgAAAAAAAMAAgAcAAkAAAACAAIAAQAcAAoAAAACAAEAAgAcAAsAAAACAAIAAQAcAAwAAAAAAAMAAwACAAcAAAACAAUAAAACAAoAAAACAAUAAAACAA0AAAACAAUAAAACABAAAAACAAUAAAAhABAAAAACAAUAAAAhAA0AAAACAAUAAAAhAAoAAAACAAUAAAAhAAcAAAACAAUAAAADAAcAAAACAAUAAAADAAoAAAACAAUAAAADAA0AAAACAAUAAAADABAAAAACAAUAAAAgABAAAAACAAUAAAAgAA0AAAACAAUAAAAgAAoAAAACAAUAAAAgAAcAAAACAAUAAAA=")
+tile_set = ExtResource("12_8x7m1")

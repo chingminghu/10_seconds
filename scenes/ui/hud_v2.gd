@@ -2,11 +2,13 @@ class_name GameHUDV2
 extends CanvasLayer
 
 @export var run_controller: RunControllerV2
+@export var Player: PlayerController
 
 @onready var _charge_label: Label = %ChargeLabel
 @onready var _record_queue_label: Label = %RecordQueueLabel
 @onready var _recording_panel: Control = %RecordingPanel
 @onready var _recording_label: Label = %RecordingLabel
+@onready var _player_speed_label: Label = %SpeedLabel
 
 
 func _ready() -> void:
@@ -27,6 +29,9 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	_update_recording_display()
+	
+	var velo := Player.get_real_velocity()
+	_player_speed_label.text = "SPEED: %.1f, %.1f px/s" % [velo.x, velo.y]
 
 
 func _on_recording_charges_changed(available: int, maximum: int) -> void:
