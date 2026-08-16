@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://do064rvb7o4fp" path="res://scenes/levels/level_base.gd" id="1_8vrm0"]
 [ext_resource type="PackedScene" path="res://scenes/environment/level_block.tscn" id="2_8x7m1"]
 [ext_resource type="PackedScene" uid="uid://7kk60dynj5hn" path="res://scenes/objects/orb.tscn" id="3_6rsyo"]
+[ext_resource type="PackedScene" uid="uid://bljnosbbscghl" path="res://scenes/environment/constantly_moving_block.tscn" id="3_cib7w"]
 [ext_resource type="PackedScene" uid="uid://c82cf441rhv72" path="res://scenes/goal/goal.tscn" id="4_cib7w"]
 [ext_resource type="PackedScene" uid="uid://cs6a8hpmvmpia" path="res://scenes/v2/run_controller_v2.tscn" id="5_vfes5"]
 [ext_resource type="Resource" uid="uid://cc63a4rtynx35" path="res://resources/game_config.tres" id="6_4cf7j"]
@@ -62,6 +63,11 @@ size = Vector2(1152, 24)
 block_color = Color(0, 0, 0, 0)
 
 [node name="Mechanisms" type="Node2D" parent="." unique_id=1399965887]
+
+[node name="ConstantlyMovingBlock" parent="Mechanisms" unique_id=1186551463 instance=ExtResource("3_cib7w")]
+position = Vector2(472, 552)
+moving_speed = 96.0
+init_progress = 50
 
 [node name="Objects" type="Node2D" parent="." unique_id=592942102]
 position = Vector2(291, -319)

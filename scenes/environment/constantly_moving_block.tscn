@@ -1,0 +1,29 @@
+[gd_scene format=4 uid="uid://bljnosbbscghl"]
+
+[ext_resource type="Script" uid="uid://cjbm87efej5n5" path="res://scenes/environment/constantly_moving_block.gd" id="1_qb3n1"]
+[ext_resource type="TileSet" uid="uid://b2inxf4ddwvke" path="res://scenes/environment/levelblock_tileset.tres" id="2_t8e48"]
+
+[sub_resource type="Curve2D" id="Curve2D_unwr0"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, 0)
+}
+point_count = 2
+
+[node name="ConstantlyMovingBlock" type="Node2D" unique_id=1186551463]
+position = Vector2(68, 71)
+script = ExtResource("1_qb3n1")
+polygon_points = PackedVector2Array(0, 0, 100, 0, 100, 200)
+
+[node name="Path2D" type="Path2D" parent="." unique_id=180983145]
+curve = SubResource("Curve2D_unwr0")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D" unique_id=31151260]
+rotates = false
+loop = false
+
+[node name="TileMapLayer" type="TileMapLayer" parent="Path2D/PathFollow2D" unique_id=1731930289]
+modulate = Color(0.8980392, 0.72156864, 0.54509807, 1)
+tile_map_data = PackedByteArray("AAABAP//AAAAAAIAAQAAAP//AAAAAAEAAQD/////AAAAAAEAAQD+////AAAAAAIAAAD+/wAAAAAAAAIAAgD//wAAAAAAAAEAAAAAAAAAAAAAAAEAAAABAAAAAAAAAAIAAwA=")
+tile_set = ExtResource("2_t8e48")
+use_kinematic_bodies = true
